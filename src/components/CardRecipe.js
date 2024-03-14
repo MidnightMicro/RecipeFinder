@@ -52,11 +52,13 @@ const recipes = [
   // Add more recipe objects as needed
 ];
 
-export default function RecipeReviewCard () {
+export default function RecipeReviewCard (props) {
   const [expanded, setExpanded] = useState(false);
   const [ searchQuery, setSearchQuery ] = useState ("");
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
 
-  const searchedTermfromContext = useContext(MyContext)
+  const sum = props.a + props.b
+
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -66,27 +68,41 @@ export default function RecipeReviewCard () {
     setSearchQuery(event.target.value);
   };
 
-  const filteredRecipes = recipes.filter((recipe) =>
-    recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const handleSubmit = (event) => { 
+    event.preventDefault();
+    const filteredRecipes = recipes.filter((recipe) =>
+      recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredRecipes(filteredRecipes);
+    console.log(filteredRecipes);
+  };
+  
+
 
   return (
     <> 
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <TextField
-          color="primary"
-          type="text"
-          variant="outlined"
-          helperText="Enter main item here"
-          sx={{
-            input: {
-              color: 'blue',
-              background: 'white',
-            },
-          }}
-          value={searchQuery}
-          onChange={handleChange}
-        />
+            <div>
+            <p>My name is {props.name}</p>
+            <p>The sum of the numeric props I received is {sum}</p>
+            </div>
+            <form style={{ display: 'flex', justifyContent: 'center' }} onSubmit={handleSubmit}>
+  <TextField
+    color="primary"
+    type="text"
+    variant="outlined"
+    helperText="Enter main item here"
+    sx={{
+      input: {
+        color: 'blue',
+        background: 'white',
+      },
+    }}
+    value={searchQuery}
+    onChange={handleChange}
+  />
+  <button type="submit">Submit</button>
+</form>
       </Box>
       <div>
         {filteredRecipes.map((item) => (

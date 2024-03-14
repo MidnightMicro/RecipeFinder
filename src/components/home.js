@@ -7,16 +7,17 @@ import RecipeReviewCard from "./CardRecipe";
 
 
 function Splash() {
-const [ searchTerm, setsearchTerm ] = useState ("");
+const [ searchTerm, setSearchTerm ] = useState ("");
 const MyContext = createContext("");
 
-function handleChange(event) {
-    event.preventDefault();
-    setsearchTerm(event.target.value);
-  }
+// function handleChange(event) {
+//     setSearchTerm(event.target.value);
+//   }
 
 function handleSubmit (event) { 
-    event.preventDefault();
+  event.preventDefault();
+  setSearchTerm(searchTerm);
+    // window.scrollTo({top:1080, behavior: "smooth"})
     console.log(`Query: ${searchTerm}`)
 };
 
@@ -48,7 +49,7 @@ function handleSubmit (event) {
         </Typography>
 
     <Grid>
-    
+{/*     
     <MyContext.Provider value={{searchTerm}}>
        
     <Box sx={{display:'flex',justifyContent:'center'}}>
@@ -61,7 +62,7 @@ function handleSubmit (event) {
         onChange={handleChange}>
         </TextField>
     </Box>
-    </MyContext.Provider>
+    </MyContext.Provider> */}
 
 
   
@@ -71,7 +72,7 @@ function handleSubmit (event) {
         <input name="query" type="text" required/>
     </form>
 <div style={{display:'flex',justifyContent:'center', margin:10}}>
-<button variant="contained" onClick={handleSubmit}>Submit</button>
+<button type="submit" onClick={handleSubmit}>Submit</button>
 
 </div>
 
@@ -81,7 +82,7 @@ function handleSubmit (event) {
 </Grid>
 </div>
 
-<RecipeReviewCard />
+<RecipeReviewCard name={searchTerm} a={5} b={2}/>
       </div>
     </>
   );
