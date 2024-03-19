@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -13,15 +13,17 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
 import { red } from '@mui/material/colors';
 import ExpandMore from '@mui/material/IconButton';
-import { Avatar, Box, TextField } from '@mui/material';
-import { useContext } from 'react';
-import MyContext from "./home.js";
+import { Avatar, Box, Button, Grid, TextField } from '@mui/material';
+import CustomizedDialogs from './CardInfo.js';
+import ASB from "./Photos/ASB.jpg";
+import SCP from "./Photos/SCP.jpg";
 
 const recipes = [
   {
     id:"01",
     title: 'Shrimp and Chorizo Paella',
     subheader: 'September 14, 2016',
+    image: SCP,
     description: 'This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.',
     method: 'Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10 minutes...',
   },
@@ -29,7 +31,7 @@ const recipes = [
     id:"02",
     title: 'Classic Spaghetti Bolognese',
     subheader: 'February 20, 2023',
-    image: 'https://example.com/spaghetti-bolognese.jpg',
+    image: ASB,
     description: 'A hearty and delicious spaghetti bolognese recipe with a rich tomato sauce.',
     method: 'Cook ground beef with onions, garlic, and tomato sauce. Simmer until flavors meld. Serve over cooked spaghetti.',
   },
@@ -49,16 +51,38 @@ const recipes = [
     description: 'Light and flavorful grilled salmon fillets with a zesty lemon and dill marinade.',
     method: 'Marinate salmon in a mixture of lemon juice, dill, and olive oil. Grill until cooked through. Garnish with lemon wedges.',
   },
+  {
+  id:"05",
+  title: 'Grilled Salmon with Lemon and Dill',
+  subheader: 'April 12, 2023',
+  image: 'https://example.com/grilled-salmon.jpg',
+  description: 'Light and flavorful grilled salmon fillets with a zesty lemon and dill marinade.',
+  method: 'Marinate salmon in a mixture of lemon juice, dill, and olive oil. Grill until cooked through. Garnish with lemon wedges.',
+},
+{
+id:"06",
+title: 'Grilled Salmon with Lemon and Dill',
+subheader: 'April 12, 2023',
+image: 'https://example.com/grilled-salmon.jpg',
+description: 'Light and flavorful grilled salmon fillets with a zesty lemon and dill marinade.',
+method: 'Marinate salmon in a mixture of lemon juice, dill, and olive oil. Grill until cooked through. Garnish with lemon wedges.',
+},
+{
+id:"07",
+title: 'Grilled Salmon with Lemon and Dill',
+subheader: 'April 12, 2023',
+image: 'https://example.com/grilled-salmon.jpg',
+description: 'Light and flavorful grilled salmon fillets with a zesty lemon and dill marinade.',
+method: 'Marinate salmon in a mixture of lemon juice, dill, and olive oil. Grill until cooked through. Garnish with lemon wedges.',
+},
   // Add more recipe objects as needed
 ];
 
-export default function RecipeReviewCard (props) {
+export default function RecipeReviewCard () {
   const [expanded, setExpanded] = useState(false);
   const [ searchQuery, setSearchQuery ] = useState ("");
   const [filteredRecipes, setFilteredRecipes] = useState([]);
-
-  const sum = props.a + props.b
-
+  const [scrollToCard, setScrollToCard] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -74,18 +98,21 @@ export default function RecipeReviewCard (props) {
       recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredRecipes(filteredRecipes);
+    setScrollToCard(true)
     console.log(filteredRecipes);
   };
   
-
+//local storage working prototype
+  useEffect(() => {
+    localStorage.setItem("searchQuery",JSON.stringify(searchQuery))
+  },[searchQuery]);
 
   return (
     <> 
+
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <div>
-            <p>My name is {props.name}</p>
-            <p>The sum of the numeric props I received is {sum}</p>
-            </div>
+<Grid container xs={16}>
+  <Grid item xs={16}>
             <form style={{ display: 'flex', justifyContent: 'center' }} onSubmit={handleSubmit}>
   <TextField
     color="primary"
@@ -101,18 +128,17 @@ export default function RecipeReviewCard (props) {
     value={searchQuery}
     onChange={handleChange}
   />
-  <button type="submit">Submit</button>
+
+  <Button type="submit" variant='contained'>Submit</Button>
 </form>
-      </Box>
-      <div>
-        {filteredRecipes.map((item) => (
-          <Card key={item.id} sx={{ maxWidth: 1080 }}>
+</Grid>
+    <Grid container xs={16} sx={{display:'flex', justifyContent:'center'}}>
+  {filteredRecipes.map((item, index) => (
+<Grid item key={item.id} id={index === 0 ? 'firstCard' : null}
+style={{paddingTop:150,paddingLeft:50,}}>
+      <CustomizedDialogs />
+            <Card key={item.id} sx={{ maxWidth: 1080,}}>
             <CardHeader
-              avatar={
-                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                  R
-                </Avatar>
-              }
               action={
                 <IconButton aria-label="settings">
                   <MoreVertIcon />
@@ -123,7 +149,9 @@ export default function RecipeReviewCard (props) {
             />
             <CardMedia
               component="img"
-              height="194"
+              height="500"
+              width="50"
+              
               image={item.image}
               alt="Recipe Image"
             />
@@ -154,8 +182,19 @@ export default function RecipeReviewCard (props) {
               </CardContent>
             </Collapse>
           </Card>
+</Grid>
+           
+        
+))} 
+ </Grid>
+ </Grid>
+      </Box>
+      {/* <div>
+        {filteredRecipes.map((item) => (
+          
+         
         ))}
-      </div>
+      </div> */}
     </>
   );
 };

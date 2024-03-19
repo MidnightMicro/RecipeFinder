@@ -48,25 +48,8 @@ function handleSubmit (event) {
             What's on Sale?
         </Typography>
 
-    <Grid>
-{/*     
-    <MyContext.Provider value={{searchTerm}}>
-       
-    <Box sx={{display:'flex',justifyContent:'center'}}>
-        <TextField color="primary" type="text" variant="outlined" helperText="Enter main item here" sx={{
-            input: {
-                color:"blue",
-                background:"white",
-            }
-        }}value={searchTerm}
-        onChange={handleChange}>
-        </TextField>
-    </Box>
-    </MyContext.Provider> */}
-
-
-  
-    <form style={{
+    <Grid item >
+    {/* <form style={{
         display:'flex',justifyContent:'center'
     }} onSubmit={handleSubmit}>
         <input name="query" type="text" required/>
@@ -74,15 +57,17 @@ function handleSubmit (event) {
 <div style={{display:'flex',justifyContent:'center', margin:10}}>
 <button type="submit" onClick={handleSubmit}>Submit</button>
 
-</div>
-
+</div> */}
+ 
     </Grid>
     </Grid>
 
 </Grid>
 </div>
 
-<RecipeReviewCard name={searchTerm} a={5} b={2}/>
+<RecipeReviewCard />
+
+
       </div>
     </>
   );
