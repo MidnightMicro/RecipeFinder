@@ -73,11 +73,11 @@ const recipes = [
     // Add more recipe objects as needed
   ];
 
-  function Recipes ({ search }) { // Remove the declaration of searchQuery here
+  function Recipes () {
 
     const [filteredRecipes, setFilteredRecipes] = useState([]);
     const [expanded , setExpanded] = useState(false);
-    const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || "noValue");
+    const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery"));
 
     console.log({searchQuery})
     const handleExpandClick = () => {
