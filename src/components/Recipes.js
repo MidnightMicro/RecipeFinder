@@ -77,7 +77,7 @@ const recipes = [
 
     const [filteredRecipes, setFilteredRecipes] = useState([]);
     const [expanded , setExpanded] = useState(false);
-    const [searchQuery, setSearchQuery] = useState(); // Remove this line
+    const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || "noValue");
 
     console.log({searchQuery})
     const handleExpandClick = () => {

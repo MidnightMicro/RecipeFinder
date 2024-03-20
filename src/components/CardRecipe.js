@@ -1,20 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import IconButton from '@mui/material/IconButton';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Typography from '@mui/material/Typography';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Collapse from '@mui/material/Collapse';
-import { red } from '@mui/material/colors';
-import ExpandMore from '@mui/material/IconButton';
-import { Avatar, Box, Button, Grid, TextField } from '@mui/material';
-import CustomizedDialogs from './CardInfo.js';
+
+import { Box, Button, Grid, TextField } from '@mui/material';
 import ASB from "./Photos/ASB.jpg";
 import SCP from "./Photos/SCP.jpg";
 import { Link } from 'react-router-dom';
@@ -80,43 +66,30 @@ const recipes = [
 ];
 
 export default function RecipeReviewCard() {
-  const [expanded, setExpanded] = useState(false);
-  const [filteredRecipes, setFilteredRecipes] = useState([]);
-
   // Initialize searchQuery with a default value if the value from localStorage is not valid JSON
-  const [searchQuery, setSearchQuery] = useState(() => {
-    const saved = localStorage.getItem("searchQuery");
-    try {
-      const initialValue = JSON.parse(saved);
-      return initialValue || "";
-    } catch (error) {
-      console.error("Error parsing JSON from localStorage:", error);
-      return "";
-    }
-  });
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || "blank" )
 
   const handleChange = (event) => {
     setSearchQuery(event.target.value);
   };
+  
+  const handleClick = () => {
+    localStorage.getItem("searchQuery");
+    console.log(searchQuery)
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const filteredRecipes = recipes.filter((recipe) =>
-      recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredRecipes(filteredRecipes);
-    console.log(filteredRecipes);
+    setSearchQuery(searchQuery);
+    localStorage.setItem("searchQuery", JSON.stringify(searchQuery));
     window.scrollTo({ top: 1000, behavior: "smooth" });
+    console.log(searchQuery)
   };
 
   //local storage working prototype
-  useEffect(() => {
-    localStorage.setItem("searchQuery", JSON.stringify(searchQuery))
-  }, [searchQuery]);
+  // useEffect(() => {
+  //   localStorage.setItem("searchQuery", JSON.stringify(searchQuery))
+  // }, [searchQuery]);
 
 
   return (
@@ -140,7 +113,8 @@ export default function RecipeReviewCard() {
                 onChange={handleChange}
               />
 
-              <Button component={Link} to="/recipes"  type="submit" variant='contained' search={searchQuery}>Submit</Button>
+              <button onClick={handleClick} type="submit" variant='contained'>Submit</button>
+              <button type="submit" variant='contained'>Submit</button>
             </form>
           </Grid>
 
