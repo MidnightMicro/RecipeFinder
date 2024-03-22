@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import React, { useState, useEffect } from "react";
 import SearchAppBar from './NavBar.js';
-import { Card, CardContent ,Box, Grid, Typography, CardHeader, IconButton, CardMedia, CardActions, Collapse, TextField, Button } from '@mui/material';
+import { Card, CardContent ,Box, Grid, Typography, CardHeader, IconButton, CardMedia, CardActions, Collapse, TextField, Button, Paper } from '@mui/material';
 import RecipeReviewCard from './CardRecipe.js';
 import CustomizedDialogs from './CardInfo.js';
 import MoreVertIcon from '@mui/icons-material/MoreVert.js';
@@ -112,6 +112,8 @@ const recipes = [
             
 
         <form style={{ display: 'flex', justifyContent: 'center' }} onSubmit={handleSubmit}>
+          <input type="submit" formTarget={searchQuery} value={searchQuery}>
+          </input>
   <TextField
     color="primary"
     type="text"
@@ -133,10 +135,11 @@ const recipes = [
 
         </Grid>
         </Grid>
-        <Grid container sx={{display:'flex', justifyContent:'center'}}>
+        <Grid container columns={12}sx={{display:'flex', justifyContent:'center'}}>
   {filteredRecipes.map((item, index) => (
-<Grid item key={item.id} id={index === 0 ? 'firstCard' : null}
-style={{paddingTop:150,paddingLeft:50,}}>
+    <Grid item xs={4}>
+<Paper elevation={5} key={item.id} id={index === 0 ? 'firstCard' : null}
+style={{padding:10}}>
       <CustomizedDialogs />
             <Card key={item.id} sx={{ maxWidth: 1080,}}>
             <CardHeader
@@ -184,8 +187,8 @@ style={{paddingTop:150,paddingLeft:50,}}>
               </CardContent>
             </Collapse>
           </Card>
+</Paper>
 </Grid>
-
 
            
         

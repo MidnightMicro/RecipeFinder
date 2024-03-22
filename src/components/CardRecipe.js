@@ -74,7 +74,13 @@ export default function RecipeReviewCard() {
   };
   
   const handleClick = () => {
-    localStorage.getItem("searchQuery");
+    // localStorage.getItem("searchQuery");
+    /* The `window.open("/recipes", "cream");` line of code is opening a new browser window/tab with
+    the URL "/recipes" and the name "cream". The second parameter "cream" is used as the target
+    attribute for the window.open() method, which specifies the name of the target window or tab
+    where the URL should be opened. This can be useful for opening links in specific named windows
+    or tabs for targeted content display. */
+    window.open("recipes", "red one");
     console.log(searchQuery)
   }
 
@@ -113,7 +119,7 @@ export default function RecipeReviewCard() {
                 onChange={handleChange}
               />
 
-              <button onClick={handleClick} type="submit" variant='contained'>Submit</button>
+              <button onClick={handleClick} type="submit" variant='contained'>Submit1</button>
               <button type="submit" variant='contained'>Submit</button>
             </form>
           </Grid>
