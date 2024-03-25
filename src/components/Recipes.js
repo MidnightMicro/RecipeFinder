@@ -84,26 +84,44 @@ const recipes = [
         setExpanded(!expanded);
       };
 
-      const handleChange = (event) => {
+    const randomElement = recipes[Math.floor(Math.random() * recipes.length)];  
+    const example2=()=>{
+      setSearchQuery(randomElement.title)
+    // alert(randomElement.title)
+    }
+    
+
+    const handleChange = (event) => {
         setSearchQuery(event.target.value); // Update this line to use the prop value directly
       };
 
-      const handleSubmit = (event) => { 
-        event.preventDefault();
+    const handleSubmit = (event) => { 
+      if (event) {
+        event.preventDefault(); // Prevent default form submission behavior if called with an event
+    }
         const filteredRecipes = recipes.filter((recipe) =>
           recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
         );
         setFilteredRecipes(filteredRecipes);
         console.log(filteredRecipes);
-        window.scrollTo({ top:1000, behavior: "smooth" });
+        // window.scrollTo({ top:1000, behavior: "smooth" });
       };
       
     //local storage working prototype
-      useEffect(() => {
-        localStorage.setItem("searchQuery",JSON.stringify(searchQuery))
+    useEffect(() => {
+        localStorage.setItem("searchQuery",(searchQuery))
       },[searchQuery]);
     
-  
+      const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+          handleSubmit(event);
+        }
+      };
+
+      useEffect(() => {
+        handleSubmit(); // Automatically perform search when the component mounts
+      }, []);
+
     return (
         <>
         <SearchAppBar />
@@ -112,8 +130,8 @@ const recipes = [
             
 
         <form style={{ display: 'flex', justifyContent: 'center' }} onSubmit={handleSubmit}>
-          <input type="submit" formTarget={searchQuery} value={searchQuery}>
-          </input>
+          {/* <input type="submit" formTarget={searchQuery} value={searchQuery}>
+          </input> */}
   <TextField
     color="primary"
     type="text"
@@ -127,9 +145,11 @@ const recipes = [
     }}
     value={searchQuery}
     onChange={handleChange}
+    onKeyUp={handleKeyPress}
   />
 
   <Button type="submit" variant='contained'>Submit</Button>
+  <Button onClick={example2}>Random</Button>
 </form>
     
 

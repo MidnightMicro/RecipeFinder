@@ -87,10 +87,14 @@ export default function RecipeReviewCard() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setSearchQuery(searchQuery);
-    localStorage.setItem("searchQuery", JSON.stringify(searchQuery));
+    localStorage.setItem("searchQuery", (searchQuery));
     window.scrollTo({ top: 1000, behavior: "smooth" });
     console.log(searchQuery)
   };
+
+  useEffect(()=>{
+    setSearchQuery(searchQuery);
+},[searchQuery]);
 
   //local storage working prototype
   // useEffect(() => {
