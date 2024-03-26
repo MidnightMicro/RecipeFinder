@@ -12,6 +12,8 @@ import { red } from '@mui/material/colors';
 import ExpandMore from '@mui/material/IconButton';
 import SCP from "./Photos/SCP.jpg";
 import ASB from "./Photos/ASB.jpg";
+import Draggable from 'react-draggable';
+
 
 const recipes = [
     {
@@ -48,7 +50,7 @@ const recipes = [
     },
     {
     id:"05",
-    title: 'Grilled Salmon with Lemon and Dill',
+    title: 'Steak',
     subheader: 'April 12, 2023',
     image: 'https://example.com/grilled-salmon.jpg',
     description: 'Light and flavorful grilled salmon fillets with a zesty lemon and dill marinade.',
@@ -56,7 +58,7 @@ const recipes = [
   },
   {
   id:"06",
-  title: 'Grilled Salmon with Lemon and Dill',
+  title: 'Orzo',
   subheader: 'April 12, 2023',
   image: 'https://example.com/grilled-salmon.jpg',
   description: 'Light and flavorful grilled salmon fillets with a zesty lemon and dill marinade.',
@@ -64,31 +66,43 @@ const recipes = [
   },
   {
   id:"07",
-  title: 'Grilled Salmon with Lemon and Dill',
+  title: 'Pot Roast',
   subheader: 'April 12, 2023',
   image: 'https://example.com/grilled-salmon.jpg',
   description: 'Light and flavorful grilled salmon fillets with a zesty lemon and dill marinade.',
   method: 'Marinate salmon in a mixture of lemon juice, dill, and olive oil. Grill until cooked through. Garnish with lemon wedges.',
   },
+  {
+    id:"07",
+    title: 'Jewish Pot Roast',
+    subheader: 'April 12, 2023',
+    image: 'https://example.com/grilled-salmon.jpg',
+    description: 'Light and flavorful grilled salmon fillets with a zesty lemon and dill marinade.',
+    method: 'Marinate salmon in a mixture of lemon juice, dill, and olive oil. Grill until cooked through. Garnish with lemon wedges.',
+    },
+    {
+      id:"07",
+      title: 'Pork Pot Roast',
+      subheader: 'April 12, 2023',
+      image: 'https://example.com/grilled-salmon.jpg',
+      description: 'Light and flavorful grilled salmon fillets with a zesty lemon and dill marinade.',
+      method: 'Marinate salmon in a mixture of lemon juice, dill, and olive oil. Grill until cooked through. Garnish with lemon wedges.',
+      },
+
     // Add more recipe objects as needed
   ];
 
   function Recipes () {
-
     const [filteredRecipes, setFilteredRecipes] = useState([]);
     const [expanded , setExpanded] = useState(false);
     const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery"));
+    
 
     console.log({searchQuery})
     const handleExpandClick = () => {
         setExpanded(!expanded);
       };
-
-    const randomElement = recipes[Math.floor(Math.random() * recipes.length)];  
-    const example2=()=>{
-      setSearchQuery(randomElement.title)
-    // alert(randomElement.title)
-    }
+    
     
 
     const handleChange = (event) => {
@@ -99,10 +113,12 @@ const recipes = [
       if (event) {
         event.preventDefault(); // Prevent default form submission behavior if called with an event
     }
+    
         const filteredRecipes = recipes.filter((recipe) =>
           recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
         );
         setFilteredRecipes(filteredRecipes);
+        
         console.log(filteredRecipes);
         // window.scrollTo({ top:1000, behavior: "smooth" });
       };
@@ -117,6 +133,11 @@ const recipes = [
           handleSubmit(event);
         }
       };
+
+      const randomElement = recipes[Math.floor(Math.random() * recipes.length)];  
+      const example2=()=>{
+        setSearchQuery(randomElement.title)
+      }
 
       useEffect(() => {
         handleSubmit(); // Automatically perform search when the component mounts
@@ -157,11 +178,11 @@ const recipes = [
         </Grid>
         <Grid container columns={12}sx={{display:'flex', justifyContent:'center'}}>
   {filteredRecipes.map((item, index) => (
-    <Grid item xs={4}>
+    <Grid item xs>
 <Paper elevation={5} key={item.id} id={index === 0 ? 'firstCard' : null}
 style={{padding:10}}>
-      <CustomizedDialogs />
-            <Card key={item.id} sx={{ maxWidth: 1080,}}>
+      <CustomizedDialogs recipes={filteredRecipes} selectedItem={item}/>
+            <Card key={item.id} sx={{ maxWidth: 1920,}}>
             <CardHeader
               action={
                 <IconButton aria-label="settings">
