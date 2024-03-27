@@ -68,7 +68,7 @@ export default function SearchAppBar() {
     
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar>
           
           <Box sx={{ flexGrow: 1, display: {justifyContent:'end', xs: 'none', md: 'flex' } }}>
