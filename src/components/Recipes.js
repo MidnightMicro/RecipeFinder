@@ -15,6 +15,7 @@ import {
   TextField,
   Button,
   Paper,
+  Switch,
 } from "@mui/material";
 import RecipeReviewCard from "./CardRecipe.js";
 import CustomizedDialogs from "./CardInfo.js";
@@ -40,6 +41,7 @@ const recipes = [
     title: "Shrimp and Chorizo Paella",
     subheader: "September 14, 2016",
     image: SCP,
+    price: '$5',
     description:
       "This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels, if you like.",
     method:
@@ -50,6 +52,7 @@ const recipes = [
     title: "Classic Spaghetti Bolognese",
     subheader: "February 20, 2023",
     image: ASB,
+    price: '$10',
     description:
       "A hearty and delicious spaghetti bolognese recipe with a rich tomato sauce.",
     method:
@@ -60,6 +63,7 @@ const recipes = [
     title: "Vegetarian Tofu Stir-Fry",
     subheader: "March 5, 2023",
     image: TSF,
+    price: '$15',
     description:
       "A quick and healthy vegetarian stir-fry with tofu, colorful vegetables, and a savory sauce.",
     method:
@@ -70,6 +74,7 @@ const recipes = [
     title: "Grilled Salmon with Lemon and Dill",
     subheader: "April 12, 2023",
     image: GSD,
+    price: '$20',
     description:
       "Light and flavorful grilled salmon fillets with a zesty lemon and dill marinade.",
     method:
@@ -80,6 +85,7 @@ const recipes = [
     title: "Steak",
     subheader: "April 12, 2023",
     image: PSS,
+    price: '$7.99',
     description:
       "Light and flavorful grilled salmon fillets with a zesty lemon and dill marinade.",
     method:
@@ -90,6 +96,7 @@ const recipes = [
     title: "Orzo",
     subheader: "April 12, 2023",
     image: TO,
+    price: '$2',
     description:
       "Light and flavorful grilled salmon fillets with a zesty lemon and dill marinade.",
     method:
@@ -100,6 +107,7 @@ const recipes = [
     title: "Pot Roast",
     subheader: "April 12, 2023",
     image: PotRoast,
+    price: '$5',
     description:
       "Light and flavorful grilled salmon fillets with a zesty lemon and dill marinade.",
     method:
@@ -110,6 +118,7 @@ const recipes = [
     title: "Jewish Pot Roast",
     subheader: "April 12, 2023",
     image: JPR ,
+    price: '$10',
     description:
       "Light and flavorful grilled salmon fillets with a zesty lemon and dill marinade.",
     method:
@@ -132,9 +141,11 @@ const recipes = [
 function Recipes() {
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [expanded, setExpanded] = useState(false);
+  const [priceToggle, setPriceToggle] = useState(false)
   const [searchQuery, setSearchQuery] = useState(
     localStorage.getItem("searchQuery")
   );
+  const [priceFilter, setPriceFilter] = useState("");
 
   console.log({ searchQuery });
   const handleExpandClick = () => {
@@ -145,6 +156,14 @@ function Recipes() {
     setSearchQuery(event.target.value); // Update this line to use the prop value directly
   };
 
+  const handlePriceChange = (event) =>{
+    setPriceFilter(event.target.value)
+  }
+
+  const handleSwitchChange = () => {
+    setPriceToggle(!priceToggle);
+  };
+
   const handleSubmit = (event) => {
     if (event) {
       event.preventDefault(); // Prevent default form submission behavior if called with an event
@@ -153,6 +172,7 @@ function Recipes() {
     const filteredRecipes = recipes.filter((recipe) =>
       recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
+    
     setFilteredRecipes(filteredRecipes);
 
     console.log(filteredRecipes);
@@ -170,6 +190,11 @@ function Recipes() {
     }
   };
 
+  const priceSearch = (event) =>{
+    alert(priceFilter)
+
+  }
+
   const randomElement = recipes[Math.floor(Math.random() * recipes.length)];
   const randomSearch = () => {
     setSearchQuery(randomElement.title);
@@ -178,6 +203,8 @@ function Recipes() {
   useEffect(() => {
     handleSubmit(); // Automatically perform search when the component mounts
   }, []);
+
+  const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   return (
     <>
@@ -195,13 +222,38 @@ function Recipes() {
         direction="row"
         justifyContent="center"
         alignItems="center"
-        sx={{ margin:'0 auto'}}
+        sx={{ margin:'0 auto',}}
       >
+        <Switch {...label}      checked={priceToggle}
+        onChange={handleSwitchChange}/>
+
         <Grid
-          item
+          container
           xs={6}
-          sx={{marginTop:4,marginBottom:5, backgroundColor: "red", border: 1, borderRadius: 5 }}
+          sx={{marginTop:4,marginBottom:5, backgroundColor: "rgba(0, 24, 0, 0.67)", border: 1, borderRadius: 5 }}
         >
+          {priceToggle && ( 
+          <Grid item xs style={{display:"flex", justifyContent:"center"}}>
+            <TextField 
+              color="primary"
+              type="text"
+              variant="outlined"
+              FormHelperTextProps={{ sx: { color: 'yellow' } }} 
+              helperText="Enter Price Here"
+              sx={{
+                input: {
+                  color: "blue",
+                  background: "white",
+                },
+              }} 
+              value={priceFilter}
+              onChange={handlePriceChange}
+            />
+            <Button onClick={priceSearch}>RandomPrice</Button>
+          </Grid>
+        
+      )}
+        <Grid item xs>
           <form
             style={{ display: "flex", justifyContent: "center" }}
             onSubmit={handleSubmit}
@@ -213,6 +265,7 @@ function Recipes() {
               type="text"
               variant="outlined"
               helperText="Enter main item here"
+              FormHelperTextProps={{ sx: { color: 'yellow' } }} 
               sx={{
                 input: {
                   color: "blue",
@@ -223,13 +276,21 @@ function Recipes() {
               onChange={handleChange}
               onKeyUp={handleKeyPress}
             />
+            
 
             <Button type="submit" variant="contained">
               Submit
             </Button>
-            <Button onClick={randomSearch}>Random</Button>
+            <Grid item >
 
-          </form>
+            </Grid>
+            <Button onClick={randomSearch}>Random</Button>
+          
+           
+
+            </form>
+           </Grid>
+          
         </Grid>
       </Grid>
       <Grid
