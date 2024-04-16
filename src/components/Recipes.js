@@ -204,6 +204,7 @@ function Recipes() {
     handleSubmit(); // Automatically perform search when the component mounts
   }, []);
 
+  const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   return (
     <>
@@ -216,38 +217,14 @@ function Recipes() {
       }}> 
       <Grid
         container
-        columns={6}
-        display="flex"
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        sx={{ margin:'0 auto',backgroundColor:"red"}}
-      >
-        <Grid item  sx={{backgroundColor:"blue"}} xs={5} >beans</Grid>
-        <Grid item  sx={{backgroundColor:"blue"}} xs={6} >beans</Grid>
-        </Grid>
-      <Grid
-        container
+
         columns={12}
         direction="row"
         justifyContent="center"
         alignItems="center"
-        sx={{ margin:'0 auto'}}
+        sx={{ margin:'0 auto',}}
       >
-              <Grid
-        container
-        columns={6}
-        display="flex"
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        sx={{ margin:'0 auto',backgroundColor:"red"}}
-      >
-        <Grid item  sx={{backgroundColor:"blue"}} xs={5} >beans</Grid>
-        <Grid item  sx={{backgroundColor:"blue"}} xs={6} >beans</Grid>
-        </Grid>
-        <Typography sx={{color:"white"}}> Price Toggle </Typography>
-        <Switch checked={priceToggle} label="Hello"
+        <Switch {...label}      checked={priceToggle}
         onChange={handleSwitchChange}/>
 
         <Grid
@@ -272,7 +249,7 @@ function Recipes() {
               value={priceFilter}
               onChange={handlePriceChange}
             />
-            <Button variant="contained" color="primary" onClick={priceSearch}>Random Price</Button>
+            <Button onClick={priceSearch}>RandomPrice</Button>
           </Grid>
         
       )}
@@ -316,7 +293,6 @@ function Recipes() {
           
         </Grid>
       </Grid>
-
       <Grid
         container
         columns={12}
