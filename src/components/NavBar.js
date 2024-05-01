@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import PriceChange from './PriceChange';
 import { useState } from 'react';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -85,6 +86,13 @@ export default function SearchAppBar() {
                sx={{ my: 2, color: 'white'}}
              >
               Recipes
+             </Button></Link>
+          <Link to="/PriceChange">
+          <Button
+               onClick={handleCloseNavMenu}
+               sx={{ my: 2, color: 'white'}}
+             >
+              Price Change
              </Button></Link>
 
           </Box>

@@ -8,11 +8,12 @@ import RecipeReviewCard from "./CardRecipe";
 
 function Splash() {
 const [ searchTerm, setSearchTerm ] = useState ("");
-const MyContext = createContext("");
+
 
 // function handleChange(event) {
 //     setSearchTerm(event.target.value);
 //   }
+
 
 function handleSubmit (event) { 
   event.preventDefault();

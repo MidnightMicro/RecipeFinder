@@ -142,6 +142,12 @@ function Recipes() {
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const [priceToggle, setPriceToggle] = useState(false)
+  const [posts, setPosts] = useState([]);
+
+
+
+
+ 
   const [searchQuery, setSearchQuery] = useState(
     localStorage.getItem("searchQuery")
   );
@@ -173,11 +179,27 @@ function Recipes() {
       recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
     
-    setFilteredRecipes(filteredRecipes);
 
     console.log(filteredRecipes);
     // window.scrollTo({ top:1000, behavior: "smooth" });
   };
+
+  useEffect(() => {
+    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchQuery}`)
+       .then((response) => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json();
+       })
+       .then((data) => {
+          console.log(data);
+          setFilteredRecipes(data.meals);
+       })
+       .catch((error) => {
+          console.error('Error fetching data:', error);
+       });
+}, []);
 
   //local storage working prototype
   useEffect(() => {
@@ -195,10 +217,26 @@ function Recipes() {
 
   }
 
-  const randomElement = recipes[Math.floor(Math.random() * recipes.length)];
+  // const randomElement = recipes[Math.floor(Math.random() * recipes.length)];
   const randomSearch = () => {
-    setSearchQuery(randomElement.title);
+    fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
+       .then((response) => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json();
+       })
+       .then((data) => {
+          console.log(data);
+          setFilteredRecipes(data.meals);
+       })
+       .catch((error) => {
+          console.error('Error fetching data:', error);
+       });
   };
+    useEffect(() => {
+      randomSearch()
+    }, []);
 
   useEffect(() => {
     handleSubmit(); // Automatically perform search when the component mounts
@@ -298,19 +336,45 @@ function Recipes() {
         columns={12}
         sx={{ display: "flex", alignItems:"center",justifyContent: "center",  }}
       >
-        {filteredRecipes.map((item, index) => (
+
+      
+      <Grid>
+      <p>Beans</p>
+{filteredRecipes.map((item) => {
+   return (
+      <div className="post-card" key={item.idMeal}>
+         <h1 className="post-title">{item.strMeal}</h1>
+         <img src={item.strMealThumb} alt="Food pic" />
+         {item.strInstructions && (
+            <div>
+               <h3>Instructions:</h3>
+               <ol>
+                  {item.strInstructions.split('\r\n').filter(instruction => instruction.trim() !== '').map((instruction, index) => (
+                     <li key={index}>{instruction}</li>
+                  ))}
+               </ol>
+            </div>
+         )}
+         <div className="button">
+            <div className="delete-btn">Delete</div>
+         </div>
+      </div>
+   );
+})}
+      </Grid>
+        {/* {filteredRecipes.map((item, index) => (
           <Grid item xs>
             <Paper
               elevation={2}
               key={item.id}
               id={index === 0 ? "firstCard" : null}
               style={{backgroundColor:'#93e9be' , display:"flex", maxWidth:500,margin:'0 auto',padding:10,alignItems:"center",justifyContent:"center" }}
-            >
+            > */}
               {/* <CustomizedDialogs
                 recipes={filteredRecipes}
                 selectedItem={item}
               /> */}
-              <Card key={item.id} sx={{maxWidth: 1000 }}>
+              {/* <Card key={item.id} sx={{maxWidth: 1000 }}>
                 <CardHeader
                   action={
                     <IconButton aria-label="settings">
@@ -357,7 +421,7 @@ function Recipes() {
               </Card>
             </Paper>
           </Grid>
-        ))}
+        ))} */}
       </Grid>
       </Box>
     </>

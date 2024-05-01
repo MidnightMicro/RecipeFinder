@@ -68,19 +68,13 @@ const recipes = [
 export default function RecipeReviewCard() {
   // Initialize searchQuery with a default value if the value from localStorage is not valid JSON
   const [searchQuery, setSearchQuery] = useState(localStorage.getItem("searchQuery") || "blank" )
+  
 
   const handleChange = (event) => {
     setSearchQuery(event.target.value);
   };
   
   const handleClick = () => {
-    // localStorage.getItem("searchQuery");
-    /* The `window.open("/recipes", "cream");` line of code is opening a new browser window/tab with
-    the URL "/recipes" and the name "cream". The second parameter "cream" is used as the target
-    attribute for the window.open() method, which specifies the name of the target window or tab
-    where the URL should be opened. This can be useful for opening links in specific named windows
-    or tabs for targeted content display. */
-    window.open("recipes", "red one");
     console.log(searchQuery)
   }
 
@@ -95,6 +89,8 @@ export default function RecipeReviewCard() {
   useEffect(()=>{
     setSearchQuery(searchQuery);
 },[searchQuery]);
+
+
 
   //local storage working prototype
   // useEffect(() => {
