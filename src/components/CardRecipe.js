@@ -82,7 +82,7 @@ export default function RecipeReviewCard() {
     event.preventDefault();
     setSearchQuery(searchQuery);
     localStorage.setItem("searchQuery", (searchQuery));
-    window.scrollTo({ top: 1000, behavior: "smooth" });
+    window.open("./recipes")
     console.log(searchQuery)
   };
 

@@ -8,19 +8,22 @@ import RecipeReviewCard from "./CardRecipe";
 
 function Splash() {
 const [ searchTerm, setSearchTerm ] = useState ("");
+const [ searchQuery, setSearchQuery ] = useState ("");
 
 
-// function handleChange(event) {
-//     setSearchTerm(event.target.value);
-//   }
+function handleChange(event) {
+    setSearchTerm(event.target.value);
+  }
 
 
-function handleSubmit (event) { 
-  event.preventDefault();
-  setSearchTerm(searchTerm);
-    // window.scrollTo({top:1080, behavior: "smooth"})
-    console.log(`Query: ${searchTerm}`)
-};
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSearchQuery(searchQuery);
+    localStorage.setItem("searchQuery", (searchQuery));
+    window.scrollTo({ top: 1000, behavior: "smooth" });
+    console.log(searchQuery)
+  };
 
 
   return (
@@ -50,7 +53,7 @@ function handleSubmit (event) {
         </Typography>
 
     <Grid item >
-    {/* <form style={{
+    <form style={{
         display:'flex',justifyContent:'center'
     }} onSubmit={handleSubmit}>
         <input name="query" type="text" required/>
@@ -58,7 +61,7 @@ function handleSubmit (event) {
 <div style={{display:'flex',justifyContent:'center', margin:10}}>
 <button type="submit" onClick={handleSubmit}>Submit</button>
 
-</div> */}
+</div>
  
     </Grid>
     </Grid>
