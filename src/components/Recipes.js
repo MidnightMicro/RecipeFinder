@@ -155,7 +155,6 @@ function Recipes() {
   );
   const [priceFilter, setPriceFilter] = useState("");
 
-  console.log({ searchQuery });
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -173,10 +172,8 @@ function Recipes() {
   };
 
   const handleSubmit = (event) => {
-    if (event) {
       event.preventDefault(); // Prevent default form submission behavior if called with an event
-    }
-    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchQuery}`)
+    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${searchQuery}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -190,32 +187,32 @@ function Recipes() {
     .catch((error) => {
       console.error("Error fetching data:", error);
     });
-
+    console.log(searchQuery);
     console.log(filteredRecipes);
     // window.scrollTo({ top:1000, behavior: "smooth" });
   };
 
-  useEffect(() => {
-    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchQuery}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        setFilteredRecipes(data.meals);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchQuery}`)
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       console.log(data);
+  //       setFilteredRecipes(data.meals);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data:", error);
+  //     });
+  // }, []);
 
   //local storage working prototype
-  useEffect(() => {
-    localStorage.setItem("searchQuery", searchQuery);
-  }, [searchQuery]);
+  // useEffect(() => {
+  //   localStorage.setItem("searchQuery", searchQuery);
+  // }, [searchQuery]);
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
@@ -248,9 +245,6 @@ function Recipes() {
     randomSearch();
   }, []);
 
-  useEffect(() => {
-    handleSubmit(); // Automatically perform search when the component mounts
-  }, []);
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -263,7 +257,7 @@ function Recipes() {
         sx={{
           backgroundImage:
             'url("https://static.vecteezy.com/system/resources/previews/037/349/588/non_2x/ai-generated-wood-background-with-chalkboard-and-lemon-free-photo.jpg")',
-          backgroundSize: "cover",
+          backgroundSize: "static",
         }}
       >
         <Grid
@@ -339,7 +333,7 @@ function Recipes() {
                   onKeyUp={handleKeyPress}
                 />
 
-                <Button type="submit" variant="contained">
+                <Button type="submit" variant="contained" onSubmit={handleSubmit}>
                   Submit
                 </Button>
                 <Grid item></Grid>
@@ -435,7 +429,7 @@ function Recipes() {
 
                         </Typography>
                       </CardContent>
-                      <CardActions disableSpacing>
+                      {/* <CardActions disableSpacing>
                         <IconButton aria-label="add to favorites">
                           <FavoriteIcon />
                         </IconButton>
@@ -456,7 +450,7 @@ function Recipes() {
                           <Typography paragraph>Method:</Typography>
                           <Typography paragraph>{item.method}</Typography>
                         </CardContent>
-                      </Collapse>
+                      </Collapse> */}
                     </Card>
                   </Paper>
                 </Grid>

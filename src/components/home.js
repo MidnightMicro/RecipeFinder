@@ -21,7 +21,6 @@ function handleChange(event) {
     event.preventDefault();
     setSearchQuery(searchQuery);
     localStorage.setItem("searchQuery", (searchQuery));
-    window.scrollTo({ top: 1000, behavior: "smooth" });
     console.log(searchQuery)
   };
 
