@@ -12,7 +12,7 @@ const [ searchQuery, setSearchQuery ] = useState ("");
 
 
 function handleChange(event) {
-    setSearchTerm(event.target.value);
+    setSearchQuery(event.target.value);
   }
 
 
@@ -52,6 +52,26 @@ function handleChange(event) {
         </Typography>
 
     <Grid item >
+      <Box component="form"
+      sx={{
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+    >
+      <div>
+        <TextField
+          required
+          id="outlined-required"
+          label="Required"
+          defaultValue="Enter Food Here"
+          value={searchQuery}
+          onChange={handleChange}
+        />
+        </div>
+        <Button onClick={handleSubmit}>Submit</Button>
+      </Box>
+      
     <form style={{
         display:'flex',justifyContent:'center'
     }} onSubmit={handleSubmit}>

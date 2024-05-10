@@ -22,6 +22,7 @@ import {
   Switch,
   ListItem,
   List,
+  Alert,
 } from "@mui/material";
 import RecipeReviewCard from "./CardRecipe.js";
 import CustomizedDialogs from "./CardInfo.js";
@@ -181,8 +182,13 @@ function Recipes() {
       return response.json();
     })
     .then((data) => {
+      if (data != null) {
       console.log(data);
       setFilteredRecipes(data.meals);
+    } else{
+      setSearchQuery("Chicken");
+      alert("Please provide valid ingredient")
+    }
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
@@ -192,27 +198,32 @@ function Recipes() {
     // window.scrollTo({ top:1000, behavior: "smooth" });
   };
 
-  // useEffect(() => {
-  //   fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchQuery}`)
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("Network response was not ok");
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       console.log(data);
-  //       setFilteredRecipes(data.meals);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching data:", error);
-  //     });
-  // }, []);
+  useEffect(() => {
+    localStorage.setItem("searchQuery", searchQuery);
+  }, [searchQuery]);
 
-  //local storage working prototype
-  // useEffect(() => {
-  //   localStorage.setItem("searchQuery", searchQuery);
-  // }, [searchQuery]);
+  useEffect(() => {
+    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchQuery}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data != null) {
+        console.log(data);
+        setFilteredRecipes(data.meals);
+      } else{
+        setSearchQuery("Chicken");
+        alert("Please provide valid ingredient")
+      }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
@@ -241,9 +252,9 @@ function Recipes() {
         console.error("Error fetching data:", error);
       });
   };
-  useEffect(() => {
-    randomSearch();
-  }, []);
+  // useEffect(() => {
+  //   randomSearch();
+  // }, []);
 
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
@@ -353,7 +364,42 @@ function Recipes() {
         >
           <Grid>
             <p>Beans</p>
-            {filteredRecipes.map((item) => (
+/* The code is checking if the `filteredRecipes` array exists and has a length greater than 0. If these
+conditions are met, it then maps over the `filteredRecipes` array and performs some operation on
+each item in the array. */
+            {filteredRecipes && filteredRecipes.length > 0 ? (
+  filteredRecipes.map((item) => (
+    <Grid key={item.id}>
+      <Paper>
+        <Card sx={{ maxWidth: 1000 }}>
+          <CardHeader
+            action={
+              <IconButton aria-label="settings">
+                <MoreVertIcon />
+              </IconButton>
+            }
+            title={item.strMeal}
+            subheader={item.strCategory}
+          />
+          <CardMedia
+            component="img"
+            height="500"
+            width="50"
+            image={item.strMealThumb}
+            alt="Recipe Image"
+          />
+          <CardContent>
+            <CustomizedDialogs recipes={filteredRecipes} selectedItem={item} />
+          </CardContent>
+        </Card>
+      </Paper>
+    </Grid>
+  ))
+) : (
+  <Alert severity="warning">No recipes found. Please provide a valid ingredient.</Alert>
+)}
+
+            {/* {filteredRecipes.map((item) => (
               <>
                 <Grid>
                   <Paper>
@@ -429,94 +475,14 @@ function Recipes() {
 
                         </Typography>
                       </CardContent>
-                      {/* <CardActions disableSpacing>
-                        <IconButton aria-label="add to favorites">
-                          <FavoriteIcon />
-                        </IconButton>
 
-                        <IconButton aria-label="share">
-                          <ShareIcon />
-                        </IconButton>
-                        <IconButton
-                          onClick={handleExpandClick}
-                          aria-expanded={expanded}
-                          aria-label="show more"
-                        >
-                          <ExpandMoreIcon />
-                        </IconButton>
-                      </CardActions>
-                      <Collapse in={expanded} timeout="auto" unmountOnExit>
-                        <CardContent>
-                          <Typography paragraph>Method:</Typography>
-                          <Typography paragraph>{item.method}</Typography>
-                        </CardContent>
-                      </Collapse> */}
                     </Card>
                   </Paper>
                 </Grid>
               </>
-            ))}
+            ))} */}
           </Grid>
-          {/* {filteredRecipes.map((item, index) => (
-          <Grid item xs>
-            <Paper
-              elevation={2}
-              key={item.id}
-              id={index === 0 ? "firstCard" : null}
-              style={{backgroundColor:'#93e9be' , display:"flex", maxWidth:500,margin:'0 auto',padding:10,alignItems:"center",justifyContent:"center" }}
-            > */}
-          {/* <CustomizedDialogs
-                recipes={filteredRecipes}
-                selectedItem={item}
-              /> */}
-          {/* <Card key={item.id} sx={{maxWidth: 1000 }}>
-                <CardHeader
-                  action={
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
-                  }
-                  title={item.title}
-                  subheader={item.subheader}
-                />
-                <CardMedia
-                  component="img"
-                  height="500"
-                  width="50"
-                  image={item.image}
-                  alt="Recipe Image"
-                />
-                <CardContent>
-                  <Typography variant="body2" color="text.secondary">
-                    {item.description}
-                  </Typography>
-                </CardContent>
-                <CardActions disableSpacing>
-                  <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                  </IconButton>
-
-                  <IconButton aria-label="share">
-                    <ShareIcon />
-                  </IconButton>
-                  <IconButton
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                  >
-                    <ExpandMoreIcon />
-                  </IconButton>
-                </CardActions>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                  <CardContent>
-                    <Typography paragraph>Method:</Typography>
-                    <Typography paragraph>{item.method}</Typography>
-                  </CardContent>
-                </Collapse>
-              </Card>
-            </Paper>
-          </Grid>
-        ))} */}
+         
         </Grid>
       </Box>
     </>
