@@ -78,7 +78,7 @@ function handleChange(event) {
         <input name="query" type="text" required/>
     </form>
 <div style={{display:'flex',justifyContent:'center', margin:10}}>
-<button type="submit" onClick={handleSubmit}>Submit</button>
+<Button type="submit" onClick={handleSubmit}>Submit</Button>
 
 </div>
  

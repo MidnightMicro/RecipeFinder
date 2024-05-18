@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import SearchAppBar from "./NavBar.js";
+import MiniDrawer from "./drawer.js";
 import {
   Accordion,
   AccordionSummary,
@@ -262,15 +263,17 @@ function Recipes() {
 
 
   return (
-    <>
+    <div>
+      <MiniDrawer />
       <SearchAppBar />
       <Box
-        sx={{
-          backgroundImage:
-            'url("https://static.vecteezy.com/system/resources/previews/037/349/588/non_2x/ai-generated-wood-background-with-chalkboard-and-lemon-free-photo.jpg")',
-          backgroundSize: "static",
-        }}
-      >
+      // style={{
+      //   backgroundImage:
+      //     'url("https://static.vecteezy.com/system/resources/previews/037/349/588/non_2x/ai-generated-wood-background-with-chalkboard-and-lemon-free-photo.jpg")',
+      //   backgroundSize: "cover",
+      //   backgroundPosition: "absolute",
+      //    }}
+    >
         <Grid
           container
           columns={12}
@@ -364,10 +367,7 @@ function Recipes() {
         >
           <Grid>
             <p>Beans</p>
-/* The code is checking if the `filteredRecipes` array exists and has a length greater than 0. If these
-conditions are met, it then maps over the `filteredRecipes` array and performs some operation on
-each item in the array. */
-            {filteredRecipes && filteredRecipes.length > 0 ? (
+{filteredRecipes && filteredRecipes.length > 0 ? (
   filteredRecipes.map((item) => (
     <Grid key={item.id}>
       <Paper>
@@ -485,7 +485,7 @@ each item in the array. */
          
         </Grid>
       </Box>
-    </>
+    </div>
   );
 }
 

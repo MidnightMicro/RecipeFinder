@@ -119,8 +119,8 @@ export default function RecipeReviewCard() {
                 onChange={handleChange}
               />
 
-              <button onClick={handleClick} type="submit" variant='contained'>Submit1</button>
-              <button type="submit" variant='contained'>Submit</button>
+              <Button onClick={handleClick} type="submit" variant='contained'>Submit1</Button>
+              <Button type="submit" variant='contained'>Submit</Button>
             </form>
           </Grid>
 

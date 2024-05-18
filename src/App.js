@@ -6,6 +6,8 @@ import PriceChange from './components/PriceChange';
 import ResponsiveAppBar from './components/NavBar';
 
 function App() {
+
+ 
   return (
     <>
     {/* <ResponsiveAppBar /> */}
