@@ -10,14 +10,17 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
+import ViewListOutlinedIcon from '@mui/icons-material/ViewListOutlined';
 
 const drawerWidth = 240;
 
@@ -127,35 +130,125 @@ export default function MiniDrawer() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        
+
         <List>
-        
-            <ListItem disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
+
+          <ListItem disablePadding sx={{ display: 'block' }}>
+            <ListItemButton
               href="/"
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >Home
-                <ListItemIcon
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+              }}
+            >
+            </ListItemButton>
+
+            {open ? <div>
+              <ListItem disablePadding sx={{ display: 'block' }}>
+                <ListItemButton
+                  href="/"
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
                   }}
                 >
+                  Home
+                </ListItemButton>
+                <ListItem disablePadding sx={{ display: 'block' }}>
+                  <ListItemButton
+                    href="/Recipes"
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
+                    }}
+                  >Recipes</ListItemButton>
+                </ListItem>
+                <ListItem disablePadding sx={{ display: 'block' }}>
+                  <ListItemButton
+                    href="/"
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
+                    }}
+                  >Create your Own</ListItemButton>
+                </ListItem>
+                <ListItem disablePadding sx={{ display: 'block' }}>
+                  <ListItemButton
+                    href="/"
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      px: 2.5,
+                    }}
+                  >Edit</ListItemButton>
+                </ListItem>
+              </ListItem>
+            </div>
 
-                </ListItemIcon>
-                <ListItemText sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
+              :
+
+              <div>
+                <ListItemButton
+                 href="/"
+                 sx={{
+                   minHeight: 48,
+                   justifyContent: open ? 'initial' : 'center',
+                   px: 2.5,
+                 }}
+                >
+                  <HomeOutlinedIcon />
+                </ListItemButton>
+                <ListItemButton
+                 href="/Recipes"
+                 sx={{
+                   minHeight: 48,
+                   justifyContent: open ? 'initial' : 'center',
+                   px: 2.5,
+                 }}
+                >
+                  <ViewListOutlinedIcon />
+                </ListItemButton>
+                <ListItemButton>
+                  <CreateOutlinedIcon />
+                </ListItemButton>
+                <ListItemButton>
+                  <EditNoteOutlinedIcon />
+                </ListItemButton>
+
+
+
+
+
+              </div>}
+
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : 'auto',
+                justifyContent: 'center',
+              }}
+            >
+            </ListItemIcon>
+            <ListItemText sx={{ opacity: open ? 1 : 0 }} />
+
+          </ListItem>
+          <ListItem>
+            <ListItemButton>Recipes</ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton> Create Your Own
+
+            </ListItemButton>
+          </ListItem>
 
         </List>
         <Divider />
       </Drawer>
-      
+
     </Box>
   );
 }

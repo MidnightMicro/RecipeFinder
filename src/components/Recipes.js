@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import SearchAppBar from "./NavBar.js";
-import MiniDrawer from "./drawer.js";
+import ResponsiveDrawer from "./drawer.js";
 import {
   Accordion,
   AccordionSummary,
@@ -264,7 +264,7 @@ function Recipes() {
 
   return (
     <div>
-      <MiniDrawer />
+      <ResponsiveDrawer />
       <SearchAppBar />
       <Box
       // style={{
