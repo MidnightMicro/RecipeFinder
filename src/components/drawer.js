@@ -30,7 +30,7 @@ const drawerWidth = 240;
 const NavbarTheme = createTheme({
   palette: {
     primary: {
-      main: '#4b6267',
+      main: 'rgba(84,100,84)',
     },
   },
 })

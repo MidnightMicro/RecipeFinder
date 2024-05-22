@@ -265,8 +265,13 @@ function Recipes() {
   return (
     <div>
       <ResponsiveDrawer />
-      <SearchAppBar />
+      {/* <SearchAppBar /> */}
       <Box
+      style={{
+        background: 'linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%)',
+        marginTop:'50px',
+        backgroundSize: "cover",
+      }}
       // style={{
       //   backgroundImage:
       //     'url("https://static.vecteezy.com/system/resources/previews/037/349/588/non_2x/ai-generated-wood-background-with-chalkboard-and-lemon-free-photo.jpg")',
@@ -274,6 +279,8 @@ function Recipes() {
       //   backgroundPosition: "absolute",
       //    }}
     >
+
+      <Box>
         <Grid
           container
           columns={12}
@@ -358,20 +365,21 @@ function Recipes() {
         </Grid>
         <Grid
           container
-          columns={12}
+          spacing={4}
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            overflow:'auto',
+            maxHeight:'80vh',
           }}
         >
-          <Grid>
             <p>Beans</p>
 {filteredRecipes && filteredRecipes.length > 0 ? (
   filteredRecipes.map((item) => (
-    <Grid key={item.id}>
+    <Grid item key={item.id} >
       <Paper>
-        <Card sx={{ maxWidth: 1000 }}>
+        <Card sx={{ maxWidth: 1000, maxHeight:1000 }}>
           <CardHeader
             action={
               <IconButton aria-label="settings">
@@ -399,91 +407,10 @@ function Recipes() {
   <Alert severity="warning">No recipes found. Please provide a valid ingredient.</Alert>
 )}
 
-            {/* {filteredRecipes.map((item) => (
-              <>
-                <Grid>
-                  <Paper>
-                    <Card key={item.id} sx={{ maxWidth: 1000 }}>
-                      <CardHeader
-                        action={
-                          <IconButton aria-label="settings">
-                            <MoreVertIcon />
-                          </IconButton>
-                        }
-                        title={item.strMeal}
-                        subheader={item.strCategory}
-                      />
-                      <CardMedia
-                        component="img"
-                        height="500"
-                        width="50"
-                        image={item.strMealThumb}
-                        alt="Recipe Image"
-                      />
-                      <CardContent>
-                        <CustomizedDialogs
-                          recipes={filteredRecipes}
-                          selectedItem={item}
-                        />
-                        {item.strInstructions && (
-                          <>
-                            <Accordion>
-                              <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1-content"
-                                id="panel1-header"
-                              >
-                                Instructions
-                              </AccordionSummary>
-                              <AccordionDetails>
-                                <div>
-                                  <List>
-                                    {item.strInstructions
-                                      .split("\r\n")
-                                      .filter(
-                                        (instruction) => instruction.trim() !== ""
-                                      )
-                                      .map((instruction, index) => (
-                                        <ListItem key={index}>
-                                          {instruction}
-                                        </ListItem>
-                                      ))}
-                                  </List>
-                                </div>
-                              </AccordionDetails>
-                            </Accordion>
-                            <List>
 
-                            </List>
-                            <Typography variant="h3">Ingredients</Typography>
-                            {Array.from({ length: 20 }, (_, i) => i + 1).map((index) => {
-                                        const ingredient = item[`strIngredient${index}`];
-                                        const measure = item[`strMeasure${index}`];
-                                        if (ingredient && ingredient.trim() !== "") {
-                                            return (
-                                                <ListItem key={index}>
-                                                    {`${ingredient} - ${measure}`}
-                                                </ListItem>
-                                            );
-                                        }
-                                        return null;
-                                    })}
-
-                          </>
-                        )}
-                        <Typography variant="body2" color="text.secondary">
-
-                        </Typography>
-                      </CardContent>
-
-                    </Card>
-                  </Paper>
-                </Grid>
-              </>
-            ))} */}
-          </Grid>
          
         </Grid>
+        </Box>
       </Box>
     </div>
   );
