@@ -21,9 +21,19 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import ViewListOutlinedIcon from '@mui/icons-material/ViewListOutlined';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { blue, purple } from '@mui/material/colors';
+import { create } from '@mui/material/styles/createTransitions';
 
 const drawerWidth = 240;
 
+const NavbarTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#4b6267',
+    },
+  },
+})
 const openedMixin = (theme) => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
@@ -102,12 +112,14 @@ export default function MiniDrawer() {
   };
 
   return (
+    <ThemeProvider theme={NavbarTheme}>
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} color='primary'>
         <Toolbar>
           <IconButton
-            color="inherit"
+            theme={NavbarTheme}
+            // color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
@@ -212,10 +224,24 @@ export default function MiniDrawer() {
                 >
                   <ViewListOutlinedIcon />
                 </ListItemButton>
-                <ListItemButton>
+                <ListItemButton 
+                                 href="/Recipes"
+                                 sx={{
+                                   minHeight: 48,
+                                   justifyContent: open ? 'initial' : 'center',
+                                   px: 2.5,
+                                 }}
+                >
                   <CreateOutlinedIcon />
                 </ListItemButton>
-                <ListItemButton>
+                <ListItemButton
+                                 href="/Recipes"
+                                 sx={{
+                                   minHeight: 48,
+                                   justifyContent: open ? 'initial' : 'center',
+                                   px: 2.5,
+                                 }}
+                >
                   <EditNoteOutlinedIcon />
                 </ListItemButton>
 
@@ -250,5 +276,6 @@ export default function MiniDrawer() {
       </Drawer>
 
     </Box>
+    </ThemeProvider>
   );
 }
