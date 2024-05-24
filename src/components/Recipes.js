@@ -264,14 +264,20 @@ function Recipes() {
 
   return (
     <div>
+      <Box style={{
+        backgroundImage:
+            'url("https://static.vecteezy.com/system/resources/previews/037/349/588/non_2x/ai-generated-wood-background-with-chalkboard-and-lemon-free-photo.jpg")',
+        marginTop:'50px',
+        backgroundSize: "cover",
+        backgroundRepeat:"no-repeat",
+        height:'100vh',
+        width:'100vw',
+        overflow:"auto",
+      }}>
+        
       <ResponsiveDrawer />
       {/* <SearchAppBar /> */}
       <Box
-      style={{
-        background: 'linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%)',
-        marginTop:'50px',
-        backgroundSize: "cover",
-      }}
       // style={{
       //   backgroundImage:
       //     'url("https://static.vecteezy.com/system/resources/previews/037/349/588/non_2x/ai-generated-wood-background-with-chalkboard-and-lemon-free-photo.jpg")',
@@ -371,7 +377,7 @@ function Recipes() {
             alignItems: "center",
             justifyContent: "center",
             overflow:'auto',
-            maxHeight:'80vh',
+            height:'100vh',
           }}
         >
             <p>Beans</p>
@@ -411,6 +417,7 @@ function Recipes() {
          
         </Grid>
         </Box>
+      </Box>
       </Box>
     </div>
   );

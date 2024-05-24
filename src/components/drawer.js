@@ -113,7 +113,7 @@ export default function MiniDrawer() {
 
   return (
     <ThemeProvider theme={NavbarTheme}>
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', position:"relative" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open} color='primary'>
         <Toolbar>
