@@ -24,6 +24,7 @@ import {
   ListItem,
   List,
   Alert,
+  Backdrop,
 } from "@mui/material";
 import RecipeReviewCard from "./CardRecipe.js";
 import CustomizedDialogs from "./CardInfo.js";
@@ -151,9 +152,11 @@ function Recipes() {
   const [expanded, setExpanded] = useState(false);
   const [priceToggle, setPriceToggle] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [mealId,setMealId] = useState([]);
 
   const [searchQuery, setSearchQuery] = useState(
-    localStorage.getItem("searchQuery")
+    localStorage.getItem("searchQuery") || "Chicken"
   );
   const [priceFilter, setPriceFilter] = useState("");
 
@@ -162,7 +165,8 @@ function Recipes() {
   };
 
   const handleChange = (event) => {
-    setSearchQuery(event.target.value); // Update this line to use the prop value directly
+    setSearchQuery(event.target.value);
+    localStorage.setItem("searchQuery", event.target.value); // Update this line to use the prop value directly
   };
 
   const handlePriceChange = (event) => {
@@ -173,57 +177,40 @@ function Recipes() {
     setPriceToggle(!priceToggle);
   };
 
-  const handleSubmit = (event) => {
-      event.preventDefault(); // Prevent default form submission behavior if called with an event
-    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${searchQuery}`)
-    .then((response) => {
+  const handleClose = () => {
+    setOpen(false);
+  };
+ 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${searchQuery}`);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      return response.json();
-    })
-    .then((data) => {
-      if (data != null) {
-      console.log(data);
-      setFilteredRecipes(data.meals);
-    } else{
-      setSearchQuery("Chicken");
-      alert("Please provide valid ingredient")
-    }
-    })
-    .catch((error) => {
+      const data = await response.json();
+      if (data.meals) {
+        console.log(data);
+        setFilteredRecipes(data.meals);
+        setOpen(false);
+        const mealIDs = data.meals.map(meal => meal.idMeal);
+        setMealId(mealIDs);
+        console.log("This is the meal ID array:", mealIDs);
+      } else {
+        setFilteredRecipes([]);
+        setOpen(true);
+      }
+    } catch (error) {
       console.error("Error fetching data:", error);
-    });
+    }
+    console.log(mealId);
     console.log(searchQuery);
     console.log(filteredRecipes);
-    // window.scrollTo({ top:1000, behavior: "smooth" });
   };
 
   useEffect(() => {
     localStorage.setItem("searchQuery", searchQuery);
   }, [searchQuery]);
-
-  useEffect(() => {
-    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchQuery}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (data != null) {
-        console.log(data);
-        setFilteredRecipes(data.meals);
-      } else{
-        setSearchQuery("Chicken");
-        alert("Please provide valid ingredient")
-      }
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
 
 
   const handleKeyPress = (event) => {
@@ -237,7 +224,7 @@ function Recipes() {
   };
 
   // const randomElement = recipes[Math.floor(Math.random() * recipes.length)];
-  const randomSearch = () => {
+  function randomSearch () {
     fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
       .then((response) => {
         if (!response.ok) {
@@ -347,7 +334,7 @@ function Recipes() {
                   color="primary"
                   type="text"
                   variant="outlined"
-                  helperText="Enter main item here"
+                  helperText="Enter main ingredient here"
                   FormHelperTextProps={{ sx: { color: "yellow" } }}
                   sx={{
                     input: {
@@ -410,7 +397,13 @@ function Recipes() {
     </Grid>
   ))
 ) : (
+  <Backdrop
+  open={open}
+  onClick={handleClose}
+  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+>
   <Alert severity="warning">No recipes found. Please provide a valid ingredient.</Alert>
+</Backdrop>
 )}
 
 
