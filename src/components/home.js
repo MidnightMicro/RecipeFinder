@@ -17,12 +17,6 @@ function handleChange(event) {
 
 
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setSearchQuery(searchQuery);
-    localStorage.setItem("searchQuery", (searchQuery));
-    console.log(searchQuery)
-  };
 
 
   return (
@@ -50,41 +44,7 @@ function handleChange(event) {
         <Typography variant="h1" sx={{textAlign:'center', color:"white"}}>
             What's on Sale?
         </Typography>
-
-    <Grid item >
-      <Box component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <div>
-        <TextField
-          required
-          id="outlined-required"
-          label="Required"
-          defaultValue="Enter Food Here"
-          value={searchQuery}
-          onChange={handleChange}
-        />
-        </div>
-        <Button onClick={handleSubmit}>Submit</Button>
-      </Box>
-      
-    <form style={{
-        display:'flex',justifyContent:'center'
-    }} onSubmit={handleSubmit}>
-        <input name="query" type="text" required/>
-    </form>
-<div style={{display:'flex',justifyContent:'center', margin:10}}>
-<Button type="submit" onClick={handleSubmit}>Submit</Button>
-
-</div>
- 
     </Grid>
-    </Grid>
-
 </Grid>
 </div>
 

@@ -87,7 +87,7 @@ export default function RecipeReviewCard() {
   };
 
   useEffect(()=>{
-    setSearchQuery(searchQuery);
+    setSearchQuery((searchQuery) || "");
 },[searchQuery]);
 
 
@@ -119,7 +119,7 @@ export default function RecipeReviewCard() {
                 onChange={handleChange}
               />
 
-              <Button onClick={handleClick} type="submit" variant='contained'>Submit1</Button>
+  
               <Button type="submit" variant='contained'>Submit</Button>
             </form>
           </Grid>

@@ -262,14 +262,14 @@ export default function MiniDrawer() {
             <ListItemText sx={{ opacity: open ? 1 : 0 }} />
 
           </ListItem>
-          <ListItem>
+          {/* <ListItem>
             <ListItemButton>Recipes</ListItemButton>
           </ListItem>
           <ListItem>
             <ListItemButton> Create Your Own
 
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
 
         </List>
         <Divider />

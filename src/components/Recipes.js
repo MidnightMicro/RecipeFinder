@@ -181,36 +181,84 @@ function Recipes() {
     setOpen(false);
   };
  
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${searchQuery}`);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      if (data.meals) {
+  useEffect(() => {
+    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchQuery}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.meals) {
         console.log(data);
         setFilteredRecipes(data.meals);
         setOpen(false);
-        const mealIDs = data.meals.map(meal => meal.idMeal);
-        setMealId(mealIDs);
-        console.log("This is the meal ID array:", mealIDs);
-      } else {
-        setFilteredRecipes([]);
+      } else{
+        setSearchQuery([]);
+        setFilteredRecipes([])
         setOpen(true);
       }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-    console.log(mealId);
-    console.log(searchQuery);
-    console.log(filteredRecipes);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+}, []);
+
+      const handleSubmit = (event) => {
+        event.preventDefault(); // Prevent default form submission behavior if called with an event
+      fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${searchQuery}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.meals) {
+          console.log(data);
+          setFilteredRecipes(data.meals);
+          setOpen(false);
+          const mealIDs = data.meals.map(meal => meal.idMeal);
+          setMealId(mealIDs);
+          console.log("This is the meal ID array:", mealIDs);
+        } else {
+          setFilteredRecipes([]);
+          setOpen(true);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+      console.log(searchQuery);
+      console.log(filteredRecipes);
+      // window.scrollTo({ top:1000, behavior: "smooth" });
   };
+  
+
 
   useEffect(() => {
     localStorage.setItem("searchQuery", searchQuery);
   }, [searchQuery]);
+
+  function shuffle(array) {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = shuffledArray[i];
+        shuffledArray[i] = shuffledArray[j];
+        shuffledArray[j] = temp;
+    }
+    return shuffledArray;
+}
+
+
+
+    const randomButton = () => {
+    console.log(filteredRecipes)
+    const shuffledRecipes = shuffle(filteredRecipes);
+    setFilteredRecipes(shuffledRecipes);
+    }
 
 
   const handleKeyPress = (event) => {
@@ -352,6 +400,7 @@ function Recipes() {
                 </Button>
                 <Grid item></Grid>
                 <Button onClick={randomSearch}>Random</Button>
+                <Button onClick={randomButton}>Randomize</Button>
               </form>
             </Grid>
           </Grid>
