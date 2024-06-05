@@ -25,6 +25,9 @@ import {
   List,
   Alert,
   Backdrop,
+  DialogTitle,
+  DialogContent,
+  Dialog,
 } from "@mui/material";
 import RecipeReviewCard from "./CardRecipe.js";
 import CustomizedDialogs from "./CardInfo.js";
@@ -33,6 +36,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { blue, red } from "@mui/material/colors";
+import CloseIcon from '@mui/icons-material/Close';
 import ExpandMore from "@mui/material/IconButton";
 import SCP from "./Photos/SCP.jpg";
 import ASB from "./Photos/ASB.jpg";
@@ -151,8 +155,8 @@ function Recipes() {
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const [priceToggle, setPriceToggle] = useState(false);
-  const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [mealId,setMealId] = useState([]);
 
   const [searchQuery, setSearchQuery] = useState(
@@ -176,13 +180,18 @@ function Recipes() {
   const handleSwitchChange = () => {
     setPriceToggle(!priceToggle);
   };
+  const handleClickOpen = (recipe) => {
+    setSelectedRecipe(recipe);
+    setOpen(true);
+  };
 
   const handleClose = () => {
     setOpen(false);
+    setSelectedRecipe(null);
   };
  
   useEffect(() => {
-    fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchQuery}`)
+    fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -207,7 +216,7 @@ function Recipes() {
 
       const handleSubmit = (event) => {
         event.preventDefault(); // Prevent default form submission behavior if called with an event
-      fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${searchQuery}`)
+      fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -417,43 +426,77 @@ function Recipes() {
           }}
         >
             <p>Beans</p>
-{filteredRecipes && filteredRecipes.length > 0 ? (
-  filteredRecipes.map((item) => (
-    <Grid item key={item.id} >
-      <Paper>
-        <Card sx={{ maxWidth: 1000, maxHeight:1000 }}>
-          <CardHeader
-            action={
-              <IconButton aria-label="settings">
-                <MoreVertIcon />
-              </IconButton>
-            }
-            title={item.strMeal}
-            subheader={item.strCategory}
-          />
-          <CardMedia
-            component="img"
-            height="500"
-            width="50"
-            image={item.strMealThumb}
-            alt="Recipe Image"
-          />
-          <CardContent>
-            <CustomizedDialogs recipes={filteredRecipes} selectedItem={item} />
-          </CardContent>
-        </Card>
-      </Paper>
-    </Grid>
-  ))
-) : (
-  <Backdrop
-  open={open}
-  onClick={handleClose}
-  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
->
-  <Alert severity="warning">No recipes found. Please provide a valid ingredient.</Alert>
-</Backdrop>
-)}
+            {filteredRecipes && filteredRecipes.length > 0 ? (
+        filteredRecipes.map((item) => (
+          <Grid item key={item.id}>
+            <Paper>
+              <Card sx={{ maxWidth: 1000, maxHeight: 1000 }}>
+                <CardHeader
+                  action={
+                    <IconButton aria-label="settings">
+                      <MoreVertIcon />
+                    </IconButton>
+                  }
+                  title={item.strMeal}
+                  subheader={item.strCategory}
+                />
+                <CardMedia
+                  component="img"
+                  height="500"
+                  image={item.strMealThumb}
+                  alt="Recipe Image"
+                />
+                <CardContent>
+                  <Button variant="outlined" onClick={() => handleClickOpen(item)}>
+                    Open Recipe
+                  </Button>
+                </CardContent>
+              </Card>
+            </Paper>
+
+            {selectedRecipe && (
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle sx={{ m: 0, p: 2 }}>
+            Modal title {selectedRecipe.idMeal}
+            <IconButton
+              aria-label="close"
+              onClick={handleClose}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent dividers>
+            <Typography gutterBottom>{selectedRecipe.strMeal}</Typography>
+            <Typography>{selectedRecipe.strInstructions}</Typography>
+            <CardMedia
+              component="img"
+              height="500"
+              image={selectedRecipe.strMealThumb}
+              alt="Recipe Image"
+            />
+          </DialogContent>
+        </Dialog>
+      )}
+          </Grid>
+        ))
+      ) : (
+        // <Typography>No recipes found</Typography>
+        <Backdrop
+        open={open}
+        onClick={handleClose}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <Alert severity="warning">No recipes found. Please provide a valid ingredient.</Alert>
+      </Backdrop>
+      )}
+
+
 
 
          

@@ -8,6 +8,7 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
+import { Card, CardContent, CardHeader, CardMedia, Grid, Paper } from '@mui/material';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -18,7 +19,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function CustomizedDialogs() {
+export default function CustomizedDialogs({recipes, selectedItem}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -28,9 +29,10 @@ export default function CustomizedDialogs() {
     setOpen(false);
   };
 
+console.log(recipes)
   return (
-    <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
+    <div> 
+      {/* <Button variant="outlined" onClick={handleClickOpen}>
         Open dialog
       </Button>
       <BootstrapDialog
@@ -54,19 +56,43 @@ export default function CustomizedDialogs() {
           <CloseIcon />
         </IconButton>
         <DialogContent dividers>
+  
           <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-            consectetur ac, vestibulum at eros.
+          
           </Typography>
-          <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
-            magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
-            ullamcorper nulla non metus auctor fringilla.
+          <Typography>
+           <Grid item key={recipes.id} >
+            <CardHeader></CardHeader>
+           <Paper>
+             <Card sx={{ maxWidth: 1000, maxHeight:1000 }}>
+               <CardHeader
+                 action={
+                   <IconButton aria-label="settings">
+                     
+                   </IconButton>
+                 }
+                 title={recipes.strMeal}
+                 subheader={recipes.strCategory}
+               />
+              
+               <CardMedia
+                 component="img"
+                 height="500"
+                 width="50"
+                 image={recipes.strMealThumb}
+                 alt="Recipe Image"
+               />
+               <CardContent>
+                <Typography variant="h1">
+                  HELLO
+                  </Typography>
+                 <CustomizedDialogs title={recipes.strMeal}
+                 subheader={recipes.strCategory}/>
+               </CardContent>
+             </Card>
+           </Paper>
+         </Grid>
+     
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -74,7 +100,83 @@ export default function CustomizedDialogs() {
             Save changes
           </Button>
         </DialogActions>
-      </BootstrapDialog>
-    </React.Fragment>
+      </BootstrapDialog> */
+      
+      // {filteredRecipes && filteredRecipes.length > 0 ? (
+      //   filteredRecipes.map((item, index) => (
+      //     <Grid item key={item.id} >
+      //       <Paper>
+      //         <Card sx={{ maxWidth: 1000, maxHeight:1000 }}>
+      //           <CardHeader
+      //             action={
+      //               <IconButton aria-label="settings">
+      //                 <MoreVertIcon />
+      //               </IconButton>
+      //             }
+      //             title={item.strMeal}
+      //             subheader={item.strCategory}
+      //           />
+      //           <CardMedia
+      //             component="img"
+      //             height="500"
+      //             width="50"
+      //             image={item.strMealThumb}
+      //             alt="Recipe Image"
+      //           />
+      //           <CardContent>
+      //             <div>
+      //               <Button variant="outlined">Open Recipe</Button>
+      //               {selectedRecipe && (
+      //         <Dialog open={open} onClose={handleClose}>
+      //           <DialogTitle sx={{ m: 0, p: 2 }}>
+      //             Modal title {selectedRecipe.idMeal}
+      //             <IconButton
+      //               aria-label="close"
+      //               onClick={handleClose}
+      //               sx={{
+      //                 position: 'absolute',
+      //                 right: 8,
+      //                 top: 8,
+      //                 color: (theme) => theme.palette.grey[500],
+      //               }}
+      //             >
+      
+      //               <CloseIcon />
+      //             </IconButton>
+      //           </DialogTitle>
+      //           <DialogContent dividers>
+      //             <Typography gutterBottom>{selectedRecipe.strMeal}</Typography>
+      //             <Typography>{selectedRecipe.strCategory}</Typography>
+      //             <CardMedia
+      //               component="img"
+      //               height="500"
+      //               image={selectedRecipe.strMealThumb}
+      //               alt="Recipe Image"
+      //             />
+      //           </DialogContent>
+      //         </Dialog>
+      //       )}
+      //             </div>
+      //             {/* <CustomizedDialogs recipes={filteredRecipes} selectedItem={item}/> */}
+      //           </CardContent>
+      //         </Card>
+      //       </Paper>
+      //     </Grid>
+      //   ))
+      // ) : (
+      //   <Backdrop
+      //   open={open}
+      //   onClick={handleClose}
+      //   sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      // >
+      //   <Alert severity="warning">No recipes found. Please provide a valid ingredient.</Alert>
+      // </Backdrop>
+      // )}
+      
+      
+      
+      
+      }
+    </div>
   );
 }
