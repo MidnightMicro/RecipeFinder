@@ -47,6 +47,7 @@ import Draggable from "react-draggable";
 import TO from "./Photos/TO.jpg";
 import PSS from "./Photos/PSS.jpg";
 import TSF from "./Photos/TSF.jpg";
+import { useTheme } from "@mui/material";
 
 const recipes = [
   {
@@ -158,6 +159,7 @@ function Recipes() {
   const [open, setOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [mealId,setMealId] = useState([]);
+  const theme = useTheme();
 
   const [searchQuery, setSearchQuery] = useState(
     localStorage.getItem("searchQuery") || "Chicken"
@@ -189,6 +191,15 @@ function Recipes() {
     setOpen(false);
     setSelectedRecipe(null);
   };
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
  
   useEffect(() => {
     fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`)
@@ -303,7 +314,7 @@ function Recipes() {
 
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
-
+  const drawerWidth = 240;
 
 
   return (
@@ -319,15 +330,23 @@ function Recipes() {
         overflow:"auto",
       }}>
         
-      <ResponsiveDrawer />
+      <ResponsiveDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose}/>
       {/* <SearchAppBar /> */}
       <Box
-      // style={{
-      //   backgroundImage:
-      //     'url("https://static.vecteezy.com/system/resources/previews/037/349/588/non_2x/ai-generated-wood-background-with-chalkboard-and-lemon-free-photo.jpg")',
-      //   backgroundSize: "cover",
-      //   backgroundPosition: "absolute",
-      //    }}
+component="main"
+sx={{
+  flexGrow: 1,
+  p: 3,
+  transition: (theme) =>
+    theme.transitions.create("margin", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  marginLeft: open ? `${drawerWidth}px` : `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: open ? `${drawerWidth}px` : `calc(${theme.spacing(8)} + 1px)`,
+  },
+}}
     >
 
       <Box>
@@ -425,7 +444,6 @@ function Recipes() {
             height:'100vh',
           }}
         >
-            <p>Beans</p>
             {filteredRecipes && filteredRecipes.length > 0 ? (
         filteredRecipes.map((item) => (
           <Grid item key={item.id}>
