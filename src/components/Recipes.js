@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import SearchAppBar from "./NavBar.js";
+import MiniDrawer from "./drawer.js";
 import ResponsiveDrawer from "./drawer.js";
 import {
   Accordion,
@@ -28,6 +29,7 @@ import {
   DialogTitle,
   DialogContent,
   Dialog,
+  Tooltip,
 } from "@mui/material";
 import RecipeReviewCard from "./CardRecipe.js";
 import CustomizedDialogs from "./CardInfo.js";
@@ -48,6 +50,7 @@ import TO from "./Photos/TO.jpg";
 import PSS from "./Photos/PSS.jpg";
 import TSF from "./Photos/TSF.jpg";
 import { useTheme } from "@mui/material";
+import { useRef } from "react";
 
 const recipes = [
   {
@@ -160,6 +163,7 @@ function Recipes() {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [mealId,setMealId] = useState([]);
   const theme = useTheme();
+  const divRef = useRef(null);
 
   const [searchQuery, setSearchQuery] = useState(
     localStorage.getItem("searchQuery") || "Chicken"
@@ -272,10 +276,17 @@ function Recipes() {
     return shuffledArray;
 }
 
-
+const windowScroll = () =>{
+  divRef.current.scrollTo({
+    top:0,
+    behavior:"smooth"
+    })
+  console.log("whomp")
+};
 
     const randomButton = () => {
     console.log(filteredRecipes)
+    console.log('pressed')
     const shuffledRecipes = shuffle(filteredRecipes);
     setFilteredRecipes(shuffledRecipes);
     }
@@ -293,6 +304,7 @@ function Recipes() {
 
   // const randomElement = recipes[Math.floor(Math.random() * recipes.length)];
   function randomSearch () {
+
     fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
       .then((response) => {
         if (!response.ok) {
@@ -316,13 +328,27 @@ function Recipes() {
   const label = { inputProps: { "aria-label": "Switch demo" } };
   const drawerWidth = 240;
 
+  const combineIngredientsWithMeasurements = (recipe) => {
+    const combined = [];
+    for (let i = 1; i <= 20; i++) {
+      const ingredientKey = `strIngredient${i}`;
+      const measureKey = `strMeasure${i}`;
+      if (recipe[ingredientKey] && recipe[measureKey]) {
+        combined.push(`${recipe[measureKey]} ${recipe[ingredientKey]}`);
+      } else if (recipe[ingredientKey]) {
+        combined.push(recipe[ingredientKey]);
+      }
+    }
+    return combined;
+  };
+
 
   return (
     <div>
       <Box style={{
         backgroundImage:
             'url("https://static.vecteezy.com/system/resources/previews/037/349/588/non_2x/ai-generated-wood-background-with-chalkboard-and-lemon-free-photo.jpg")',
-        marginTop:'50px',
+
         backgroundSize: "cover",
         backgroundRepeat:"no-repeat",
         height:'100vh',
@@ -330,11 +356,12 @@ function Recipes() {
         overflow:"auto",
       }}>
         
-      <ResponsiveDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose}/>
+      <MiniDrawer open={open} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose}/>
       {/* <SearchAppBar /> */}
       <Box
 component="main"
 sx={{
+  marginTop:'auto',
   flexGrow: 1,
   p: 3,
   transition: (theme) =>
@@ -349,14 +376,18 @@ sx={{
 }}
     >
 
-      <Box>
+      <Box position='relative'>
         <Grid
           container
+          /* The above code is a comment in JavaScript. It is not performing any specific action in the
+          code, but it is used to provide information or explanations about the code for developers
+          who read it. In this case, the comment mentions "position" and " */
+
           columns={12}
           direction="row"
           justifyContent="center"
           alignItems="center"
-          sx={{ margin: "0 auto" }}
+          sx={{ marginTop: "10px", position:'sticky', top:5, zIndex:2 }}
         >
           <Switch
             {...label}
@@ -368,7 +399,7 @@ sx={{
             container
             xs={6}
             sx={{
-              marginTop: 4,
+              marginTop: 8,
               marginBottom: 5,
               backgroundColor: "rgba(0, 24, 0, 0.67)",
               border: 1,
@@ -429,6 +460,7 @@ sx={{
                 <Grid item></Grid>
                 <Button onClick={randomSearch}>Random</Button>
                 <Button onClick={randomButton}>Randomize</Button>
+
               </form>
             </Grid>
           </Grid>
@@ -436,17 +468,19 @@ sx={{
         <Grid
           container
           spacing={4}
+          position='relative'
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             overflow:'auto',
-            height:'100vh',
+            // height:'100vh',
           }}
+  
         >
             {filteredRecipes && filteredRecipes.length > 0 ? (
         filteredRecipes.map((item) => (
-          <Grid item key={item.id}>
+          <Grid item key={item.id} ref={divRef}>
             <Paper>
               <Card sx={{ maxWidth: 1000, maxHeight: 1000 }}>
                 <CardHeader
@@ -458,6 +492,7 @@ sx={{
                   title={item.strMeal}
                   subheader={item.strCategory}
                 />
+
                 <CardMedia
                   component="img"
                   height="500"
@@ -473,9 +508,28 @@ sx={{
             </Paper>
 
             {selectedRecipe && (
-        <Dialog open={open} onClose={handleClose}>
+              
+        <Dialog open={open} onClose={handleClose} maxWidth="lg">
           <DialogTitle sx={{ m: 0, p: 2 }}>
-            Modal title {selectedRecipe.idMeal}
+            <div>
+            <Typography variant="h2">{selectedRecipe.strMeal}</Typography>
+                  {selectedRecipe.strYoutube ? (
+                    <Button onClick={() => window.open(selectedRecipe.strYoutube)}
+                    variant="contained">
+                      Play Video
+                    </Button>
+                  ) : (
+                    <Tooltip title="No Video Available">
+                      <span>
+                    <Button variant="outlined" disabled >
+                      Play Video
+                    </Button> 
+                    </span>
+                    </Tooltip>
+                  )}
+          <Button color="secondary" onClick={()=>{window.open(selectedRecipe.strSource); }}>Show me more</Button>
+            </div>
+
             <IconButton
               aria-label="close"
               onClick={handleClose}
@@ -490,14 +544,27 @@ sx={{
             </IconButton>
           </DialogTitle>
           <DialogContent dividers>
-            <Typography gutterBottom>{selectedRecipe.strMeal}</Typography>
-            <Typography>{selectedRecipe.strInstructions}</Typography>
-            <CardMedia
+          <CardMedia
               component="img"
               height="500"
               image={selectedRecipe.strMealThumb}
               alt="Recipe Image"
             />
+
+<Typography variant="h4">Steps</Typography>
+            {selectedRecipe.strInstructions.split('\r').map((instruction, index) => (
+              <ol key={index} >
+                {instruction}
+              </ol>
+              
+            ))}
+            <Typography variant="h4">Ingredients</Typography>
+           {combineIngredientsWithMeasurements(selectedRecipe).map((ingredient, index) => (
+                    <li key={index} >
+                      {ingredient}
+                    </li>
+                  ))}
+
           </DialogContent>
         </Dialog>
       )}
