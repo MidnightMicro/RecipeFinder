@@ -507,8 +507,8 @@ sx={{
               </Card>
             </Paper>
 
+            {/* Creates Card based on selected recipe  */}
             {selectedRecipe && (
-              
         <Dialog open={open} onClose={handleClose} maxWidth="lg">
           <DialogTitle sx={{ m: 0, p: 2 }}>
             <div>

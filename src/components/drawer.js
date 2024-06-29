@@ -10,8 +10,9 @@ import ViewListOutlinedIcon from "@mui/icons-material/ViewListOutlined";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
+//side app bar colors
 const openedMixin = (theme) => ({
   width: drawerWidth,
   transition: theme.transitions.create("width", {
@@ -19,7 +20,7 @@ const openedMixin = (theme) => ({
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: "hidden",
-  backgroundColor: "yellow",
+  backgroundColor: "rgba(101, 89, 89, 1)",
 });
 
 const closedMixin = (theme) => ({
@@ -28,7 +29,7 @@ const closedMixin = (theme) => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: "hidden",
-  backgroundColor: "purple",
+  backgroundColor: "rgba(101, 89, 89, 1)",
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
@@ -42,21 +43,21 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
-  backgroundColor: "green",
+  backgroundColor: "inherit",
 }));
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  backgroundColor: "red",
+  backgroundColor: "rgba(17, 46, 10, 1)",
   transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
     marginLeft: drawerWidth,
-    backgroundColor: "blue",
+    backgroundColor: "rgba(17, 46, 10, .9)",
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
@@ -116,7 +117,7 @@ export default function MiniDrawer({ open, handleDrawerOpen, handleDrawerClose }
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List sx={{ color: "red" }}>
+        <List sx={{ color: "yellow" }}>
           <ListItem disablePadding sx={{ display: "block" }}>
             {open ? (
               <div>
