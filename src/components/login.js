@@ -1,14 +1,22 @@
-import React from "react";
+import React, {useState} from "react";
 import { Box, Button, TextField, Typography, useTheme } from "@mui/material";
 import MiniDrawer from "./drawer";
 import SearchAppBar from "./NavBar";
 import { Form } from "react-router-dom";
+import { app, database } from '../firebaseconfig';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { collection, addDoc } from "firebase/firestore"; 
+
+
 
 const drawerWidth = 240;
 
-function RecipeCreator() {
-  const [open, setOpen] = React.useState(false);
+function Login() {
+let auth = getAuth();
+  const [data, setData ] = useState([]);
+  const [open, setOpen] = useState(false);
   const theme = useTheme();
+  const collectionRef = collection(database, 'users')
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -18,24 +26,21 @@ function RecipeCreator() {
     setOpen(false);
   };
 
-  const foodTypes = [
-    {
-      value:'Chicken'
-    },
-    {
-      value:'Beef'
-    },
-    {
-      value:'Seafood'
-    },
-    {
-      value:'Salads'
-    },
-    {
-      value:'Vegetarian'
-    }
+const handleInput = (event) => {
+    let newInput = { [event.target.name]: event.target.value };
+    setData ({...data, ...newInput})
+};
 
-  ]
+const handleSubmit = () => {
+    createUserWithEmailAndPassword (auth, data.email, data.password)
+    .then ((response) =>{
+        console.log(response.user)
+    })
+    .catch ((err) => {
+        alert(err.message);
+    })
+}
+
 
   return (
     <div>
@@ -80,26 +85,18 @@ function RecipeCreator() {
       >
         <Box component="form">
           <div>
-            <TextField 
-            id="outlined-basic" 
-            helperText="What do you want to call this meal?">
-               Meal Name 
-               </TextField>
-            <TextField
-            id="outlined-select-currency-native"
-            select
-            label="Native select"
-            defaultValue="Chicken"
-            SelectProps={{
-              native: true,
-            }}
-            helperText="Please select your food type"
-            >
-              {foodTypes.map((option) => 
-              <option key={option.value} value={option.value}>{option.value}</option>)}
-            </TextField>
-            <Button>
-              
+            <input
+            name="email"
+            placeholder="email"
+            onChange={(event) => handleInput(event)}>
+            </input>
+            <input
+            name="password"
+            placeholder="password"
+            onChange={(event) => handleInput(event)}>
+            </input>
+            <Button onClick={handleSubmit}>
+              Submit
             </Button>
           </div>
         </Box>
@@ -112,4 +109,4 @@ function RecipeCreator() {
   );
 }
 
-export default RecipeCreator;
+export default Login;

@@ -5,6 +5,8 @@ import Recipes from './components/Recipes'
 import PriceChange from './components/PriceChange';
 import ResponsiveAppBar from './components/NavBar';
 import Creator from './components/Creator';
+import Login from './components/login';
+import { app } from './firebaseconfig';
 
 function App() {
 
@@ -17,6 +19,7 @@ function App() {
       <Route path="/recipes" element={<Recipes />} />
       <Route path="/pricechange" element={<PriceChange />} />
       <Route path="/creator" element={<Creator/>} />
+      <Route path="/login" element={<Login/>} />
     </Routes>
     </>
   );
