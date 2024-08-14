@@ -17,7 +17,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Splash/>} />
       <Route path="/recipes" element={<Recipes />} />
-      <Route path="/pricechange" element={<PriceChange />} />
+      <Route path="/PriceChange" element={<PriceChange />} />
       <Route path="/creator" element={<Creator/>} />
       <Route path="/login" element={<Login/>} />
     </Routes>

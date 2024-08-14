@@ -1,14 +1,34 @@
-import React from "react";
-import { Box, Button, TextField, Typography, useTheme } from "@mui/material";
+import {React, useState }from "react";
+import { Box, Button, Checkbox, Grid, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, TextField, Typography, useTheme } from "@mui/material";
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Home from '@mui/icons-material/Home';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import MiniDrawer from "./drawer";
 import SearchAppBar from "./NavBar";
 import { Form } from "react-router-dom";
+import { IconButton } from "@mui/material/node";
 
 const drawerWidth = 240;
 
 function RecipeCreator() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [checked, setChecked] = useState([1]);
+  const [values, setValues] = useState([0]);
   const theme = useTheme();
+
+  const handleToggle = (value) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+    setValues([...values, values.length]);
+    setChecked(newChecked);
+  };
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -78,35 +98,94 @@ function RecipeCreator() {
           },
         }}
       >
-        <Box component="form">
-          <div>
-            <TextField 
-            id="outlined-basic" 
-            helperText="What do you want to call this meal?">
-               Meal Name 
-               </TextField>
+
+        {/* <Box component="form" alignItems="center" p={2} display="flex" justifyContent="center" > */}
+
+        <Grid container display="flex" flexDirection="column" alignItems="center">
+          
+        <Typography variant="h1">
+          Create a Recipe
+        </Typography> 
+        <Grid container >
+          
+        <Grid item xs> 
+        <TextField
+          id="outlined-basic"
+          helperText="What do you want to call this meal?"
+          label="Meal Name"
+        />
+          
+        </Grid>
+        
+        <Grid item xs>
             <TextField
-            id="outlined-select-currency-native"
-            select
-            label="Native select"
-            defaultValue="Chicken"
-            SelectProps={{
-              native: true,
-            }}
-            helperText="Please select your food type"
-            >
+          id="outlined-select-currency-native"
+          select
+          label="Type"
+          defaultValue="Chicken"
+          SelectProps={{
+            native: true,
+          }}
+          helperText="Please select your food type"
+        >
               {foodTypes.map((option) => 
               <option key={option.value} value={option.value}>{option.value}</option>)}
             </TextField>
-            <Button>
-              
-            </Button>
-          </div>
+          </Grid>
+          </Grid>   
+        
+
+
+        <Grid container>
+          <Grid item>
+          <Typography variant="h3">Ingredient List</Typography>
+          <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      {values.map((value) => {
+        const labelId = `checkbox-list-secondary-label-${value}`;
+        return (
+          <ListItem
+            key={value}
+            disablePadding
+          > 
+          
+<ListItemText id={labelId} primary={`Ingredient ${value + 1}`} />
+
+              <TextField/>
+              <IconButton
+              sx={{ height: 56 }} 
+              onClick={handleToggle(value)}
+              checked={checked.indexOf(value) !== -1}
+              inputProps={{ 'aria-labelledby': labelId }}
+              >
+                <AddCircleIcon />
+                </IconButton>
+          </ListItem>
+        );
+      })}
+    </List>
+
+          </Grid>
+
+          <Grid>
+
+
+          </Grid>
+         
+        
+        </Grid>
+        
+<Typography variant="h3">
+Description
+</Typography>
+<TextField fullWidth multiline minRows={4}/>
+
+        <Button>
+          Submit
+        </Button>
+          </Grid>
         </Box>
-        <Typography variant="h1" sx={{ marginTop: "20px" }}>
-          Hello
-        </Typography>
-      </Box>
+
+
       </Box>
     </div>
   );

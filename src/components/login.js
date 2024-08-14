@@ -1,9 +1,9 @@
 import React, {useState} from "react";
-import { Box, Button, TextField, Typography, useTheme } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography, useTheme } from "@mui/material";
 import MiniDrawer from "./drawer";
 import SearchAppBar from "./NavBar";
 import { Form } from "react-router-dom";
-import { app, database } from '../firebaseconfig';
+import { app, db } from '../firebaseconfig';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore"; 
 
@@ -16,7 +16,7 @@ let auth = getAuth();
   const [data, setData ] = useState([]);
   const [open, setOpen] = useState(false);
   const theme = useTheme();
-  const collectionRef = collection(database, 'users')
+  const collectionRef = collection(db, 'users')
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -83,22 +83,26 @@ const handleSubmit = () => {
           },
         }}
       >
-        <Box component="form">
-          <div>
-            <input
+        <Box component="form" sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <div>
+            <TextField
             name="email"
             placeholder="email"
             onChange={(event) => handleInput(event)}>
-            </input>
-            <input
+            </TextField>
+            <TextField
             name="password"
             placeholder="password"
             onChange={(event) => handleInput(event)}>
-            </input>
+            </TextField>
+
+            
+
             <Button onClick={handleSubmit}>
               Submit
             </Button>
-          </div>
+            </div>
+
         </Box>
         <Typography variant="h1" sx={{ marginTop: "20px" }}>
           Hello
