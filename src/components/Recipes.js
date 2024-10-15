@@ -176,7 +176,7 @@ function Recipes() {
 
   const handleChange = (event) => {
     setSearchQuery(event.target.value);
-    localStorage.setItem("searchQuery", event.target.value); // Update this line to use the prop value directly
+    localStorage.setItem("searchQuery", event.target.value); 
   };
 
   const handlePriceChange = (event) => {

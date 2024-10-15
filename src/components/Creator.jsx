@@ -6,15 +6,19 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import MiniDrawer from "./drawer";
 import SearchAppBar from "./NavBar";
 import { Form } from "react-router-dom";
-import { IconButton } from "@mui/material/node";
+import { Divider, IconButton, Paper } from "@mui/material/node";
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import { db } from "../firebaseconfig";
+import { collection, addDoc } from "firebase/firestore";
 
 
 const drawerWidth = 240;
 
 function RecipeCreator() {
-  const [isActive, setIsActive] = useState(false);
+  const [mealName, setMealName] = useState("");
+  const [mealInfo, setMealInfo] = useState("");
+  const [mealIngredients, setMealIngredients] = useState("");
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState([-1]);
   const [values, setValues] = useState([0]);
@@ -32,8 +36,7 @@ function RecipeCreator() {
     }
 
 
-/* `setValues([...values, values.length]);` is updating the state of the `values` array in the
-component. */
+
     setValues([...values, values.length]);
     setChecked(newChecked);
 
@@ -41,11 +44,10 @@ component. */
   };
 
   const handleRemove = (value) => () => {
-    // Remove the specific value from the values array
+
     const newValues = values.filter(val => val !== value);
     setValues(newValues);
-  
-    // Find the index of the value to be removed from the checked array
+
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
   
@@ -76,6 +78,21 @@ component. */
   },
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (mealName !== "") {
+        await addDoc(collection(db, "meals"), {
+            mealName,
+            mealInfo,
+            mealIngredients,
+            completed: false,
+        });
+        setMealName("");
+        setMealInfo("");
+        setMealIngredients("");
+    }
+};
+  
   const foodTypes = [
     {
       value:'Chicken'
@@ -107,13 +124,11 @@ component. */
         width:'100vw',
         overflow:"auto",
       }}>
-      {/* passes values in to make it move the content */}
       <MiniDrawer
         open={open}
         handleDrawerOpen={handleDrawerOpen}
         handleDrawerClose={handleDrawerClose}
       />
-      {/*added transition to push data when the drawer is open vs closed */}
       <Box
         component="main"
         sx={{
@@ -138,45 +153,37 @@ component. */
       >
 
         {/* <Box component="form" alignItems="center" p={2} display="flex" justifyContent="center" > */}
-
-        <Grid container display="flex" flexDirection="column" alignItems="center">
-          <Grid item>
+<form>
+        <Grid container direction="column" justifyContent="center" alignItems="center" columns={16}>
+          <Grid item xs={12} style={{textAlign:'center'}}>
         <Typography variant="h3">
           Submit a New Recipe
         </Typography> 
-        <Grid>
-          To create a new recipe, first tell us what type of meal it is and the name to see if it has already been added. Once submitted you can search like meals or create your own with a twist!
-        </Grid>
-          </Grid>
 
-        <Grid container >
-          
-        
-        <Grid item xs>
-            <TextField
-          id="outlined-select-currency-native"
-          select
-          label="Type"
-          defaultValue="Chicken"
-          SelectProps={{
-            native: true,
-          }}
-          helperText="Please select your food type"
-        >
-              {foodTypes.map((option) => 
-              <option key={option.value} value={option.value}>{option.value}</option>)}
-            </TextField>
+          <Typography variant="h6" style={{textAlign:'center', width:'900px'}}>
+          To create a new recipe, first tell us what type of meal it is and the name to see if it has already been added. Once submitted you can search like meals or create your own with a twist!
+          </Typography>
+
+
           </Grid>
+        
           </Grid>   
         
 
 
         <Grid container justify="center" columns={16}>
           <Grid item xs={6} align="center">
-          <Typography variant="h3">Ingredients</Typography>
-          <List dense  sx={{ width: '100%', maxWidth: 400, bgcolor: 'yellow' }}>
-            <Grid container columns={16} maxHeight={800} sx={{overflow:"auto"}}>
-      {values.map((value,index) => {
+          <Typography variant="h3">Ingredient List</Typography>
+          <List component={Paper}dense sx={{ width: '100%', maxWidth: 500}}>
+            <Grid container columns={16} alignItems="center" justifyContent="center"  sx={{ overflow:"auto", maxHeight:500}}>
+              <TextField
+              id="outlined-basic"
+              helperText="What do you want to call this meal?"
+              label="Meal Name"
+              value={mealIngredients}
+              onChange={(e)=>setMealIngredients(e.target.value)}
+              > </TextField>
+      {/* {values.map((value,index) => {
         const labelId = `checkbox-list-secondary-label-${value}`;
         const isLastItem = index === values.length - 1;
         return (
@@ -185,10 +192,9 @@ component. */
             disablePadding
           > 
           
-<Grid item id={labelId} xs>
-<Typography variant="subtitle">{`Ingredient ${value + 1}`}</Typography>
+<Grid item id={labelId} xs sx={{overflow:"auto", maxHeight:"200"}}>
 
-              <TextField/>
+              <TextField     label="Enter ingredient here"/>
               {!isLastItem &&(
           <IconButton
           sx={styleButton}
@@ -211,10 +217,13 @@ component. */
         <Checkbox />
 
         </Grid>
+        
           </List>
+          
         );
-      })}
+      })} */}
       </Grid>
+      
     </List>
     
 
@@ -222,26 +231,45 @@ component. */
 
 
          
-        
-        </Grid>
-        
+
+
+
+<Grid item xs > 
 <Typography variant="h3">
 Description
 </Typography>
-<Grid item xs> 
         <TextField
           id="outlined-basic"
           helperText="What do you want to call this meal?"
           label="Meal Name"
+          value={mealName}
+          onChange={(e)=>setMealName(e.target.value)}
         />
-          
-        </Grid>
-<TextField fullWidth multiline minRows={4}/>
 
-        <Button>
+            <TextField
+          id="outlined-select-currency-native"
+          select
+          label="Type"
+          defaultValue="Chicken"
+          SelectProps={{
+            native: true,
+          }}
+          helperText="Please select your food type"
+        >
+              {foodTypes.map((option) => 
+              <option key={option.value} value={option.value}>{option.value}</option>)}
+            </TextField>
+
+        
+<TextField component={Paper} fullWidth multiline minRows={4} value={mealInfo} label="Enter Description here" onChange = {(e)=>setMealInfo(e.target.value)}/>
+
+
+        <Button onClick={handleSubmit}>
           Submit
         </Button>
+        </Grid>
           </Grid>
+          </form>
         </Box>
 
 
