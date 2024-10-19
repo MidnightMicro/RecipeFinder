@@ -1,4 +1,4 @@
-import {React, useState }from "react";
+import {React, useState, useEffect }from "react";
 import { Box, Button, Checkbox, Grid, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, TextField, Typography, useTheme } from "@mui/material";
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Home from '@mui/icons-material/Home';
@@ -10,12 +10,13 @@ import { Divider, IconButton, Paper } from "@mui/material/node";
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { db } from "../firebaseconfig";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, setDoc, doc, getDoc, getDocs } from "firebase/firestore";
 
 
 const drawerWidth = 240;
 
 function RecipeCreator() {
+  const [userMade, setUserMade ] = useState([]);
   const [mealName, setMealName] = useState("");
   const [mealInfo, setMealInfo] = useState("");
   const [mealIngredients, setMealIngredients] = useState("");
@@ -112,6 +113,33 @@ function RecipeCreator() {
 
   ]
 
+  const createdRecipes = () => {
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const mealsCollection = collection(db, "meals");
+      const querySnapshot = await getDocs(mealsCollection);
+      if (!querySnapshot.empty) {
+        // Map through the querySnapshot and extract document data
+        const allMeals = querySnapshot.docs.map(doc => ({
+          id: doc.id,    // Get the document ID (useful for identifying each doc)
+          ...doc.data()  // Spread the document data (mealName, mealInfo, etc.)
+        }));
+        console.log(allMeals)
+        // Update state with fetched documents
+        setUserMade(allMeals);
+      } else {
+        console.log("No documents found in the meals collection!");
+      }
+    
+    
+    };
+
+    fetchData();
+  }, []);
+
+  
   return (
     <div>
       <Box style={{
@@ -163,7 +191,6 @@ function RecipeCreator() {
           <Typography variant="h6" style={{textAlign:'center', width:'900px'}}>
           To create a new recipe, first tell us what type of meal it is and the name to see if it has already been added. Once submitted you can search like meals or create your own with a twist!
           </Typography>
-
 
           </Grid>
         
@@ -270,6 +297,24 @@ Description
         </Grid>
           </Grid>
           </form>
+
+          <Typography>
+          <h1>Created Meals</h1>
+      {/* Render the list of recipes */}
+      {userMade.length > 0 ? (
+        <List sx={{maxHeight:300, overflow:'scroll'}}>
+          {userMade.map(recipe => (
+            <ListItem key={recipe.id}>
+              <Typography>{recipe.mealName}</Typography>
+              <p><strong>Meal Info:</strong> {recipe.mealName}</p>
+              <p><strong>Ingredients:</strong> {recipe.mealIngredients}</p>
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        <p>No meals found.</p>
+      )}
+          </Typography>
         </Box>
 
 
