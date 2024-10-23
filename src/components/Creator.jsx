@@ -20,6 +20,7 @@ function RecipeCreator() {
   const [mealName, setMealName] = useState("");
   const [mealInfo, setMealInfo] = useState("");
   const [mealIngredients, setMealIngredients] = useState("");
+  const [mealPrice,setMealPrice] = useState("");
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState([-1]);
   const [values, setValues] = useState([0]);
@@ -86,10 +87,12 @@ function RecipeCreator() {
             mealName,
             mealInfo,
             mealIngredients,
+            mealPrice,
             completed: false,
         });
         setMealName("");
         setMealInfo("");
+        setMealPrice("");
         setMealIngredients("");
     }
 };
@@ -127,7 +130,6 @@ function RecipeCreator() {
           ...doc.data()  // Spread the document data (mealName, mealInfo, etc.)
         }));
         console.log(allMeals)
-        // Update state with fetched documents
         setUserMade(allMeals);
       } else {
         console.log("No documents found in the meals collection!");
@@ -261,7 +263,8 @@ function RecipeCreator() {
 
 
 
-<Grid item xs > 
+<Grid container xs > 
+  <Grid item xs >
 <Typography variant="h3">
 Description
 </Typography>
@@ -286,6 +289,15 @@ Description
               {foodTypes.map((option) => 
               <option key={option.value} value={option.value}>{option.value}</option>)}
             </TextField>
+<TextField
+id="outlined-basic"
+helperText="How much is it?"
+label="Price"
+defaultValue="$1"
+onChange={(e)=>setMealPrice(e.target.value)}
+>Price</TextField>
+
+  </Grid>
 
         
 <TextField component={Paper} fullWidth multiline minRows={4} value={mealInfo} label="Enter Description here" onChange = {(e)=>setMealInfo(e.target.value)}/>
