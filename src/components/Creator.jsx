@@ -317,9 +317,10 @@ onChange={(e)=>setMealPrice(e.target.value)}
         <List sx={{maxHeight:300, overflow:'scroll'}}>
           {userMade.map(recipe => (
             <ListItem key={recipe.id}>
-              <Typography>{recipe.mealName}</Typography>
-              <p><strong>Meal Info:</strong> {recipe.mealName}</p>
-              <p><strong>Ingredients:</strong> {recipe.mealIngredients}</p>
+              <Typography>
+              <li><strong>Meal Info:</strong> {recipe.mealName}</li>
+              <li><strong>Ingredients:</strong> {recipe.mealIngredients}</li>
+              </Typography>
             </ListItem>
           ))}
         </List>
