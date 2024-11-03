@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/ReciperFinder/static/css/main.5024f71e.css",
+    "main.js": "/ReciperFinder/static/js/main.e8c303d5.js",
+    "static/js/453.9ef164a5.chunk.js": "/ReciperFinder/static/js/453.9ef164a5.chunk.js",
+    "static/media/exercise.gif": "/ReciperFinder/static/media/exercise.98a68c0e249bc036fc90.gif",
+    "static/media/SCP.jpg": "/ReciperFinder/static/media/SCP.f13881561d578716f8d4.jpg",
+    "static/media/PotRoast.jpg": "/ReciperFinder/static/media/PotRoast.ed968928d889bcb1fd16.jpg",
+    "static/media/TO.jpg": "/ReciperFinder/static/media/TO.977949585985e32f1f66.jpg",
+    "static/media/TSF.jpg": "/ReciperFinder/static/media/TSF.c34c060359412c5d3241.jpg",
+    "static/media/JPR.jpg": "/ReciperFinder/static/media/JPR.a4cf560616d5152c39e5.jpg",
+    "static/media/PSS.jpg": "/ReciperFinder/static/media/PSS.8006c9b71aeaf18d4935.jpg",
+    "static/media/ASB.jpg": "/ReciperFinder/static/media/ASB.448f7e47557545bf2a9b.jpg",
+    "static/media/GSD.jpg": "/ReciperFinder/static/media/GSD.19d843d46b96d011356f.jpg",
+    "index.html": "/ReciperFinder/index.html",
+    "main.5024f71e.css.map": "/ReciperFinder/static/css/main.5024f71e.css.map",
+    "main.e8c303d5.js.map": "/ReciperFinder/static/js/main.e8c303d5.js.map",
+    "453.9ef164a5.chunk.js.map": "/ReciperFinder/static/js/453.9ef164a5.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5024f71e.css",
+    "static/js/main.e8c303d5.js"
+  ]
+}
