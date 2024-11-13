@@ -125,11 +125,11 @@ function RecipeCreator() {
     // Update the local state by filtering out the deleted item
     const newList = userMade.filter((item) => item.id !== id);
     setUserMade(newList);
-  
+
     try {
       // Reference to the specific document in the "meals" collection
       const docRef = doc(db, "meals", id);
-      
+
       // Delete the document from Firebase
       await deleteDoc(docRef);
       alert("Deleted from Firebase and local state");
@@ -137,7 +137,7 @@ function RecipeCreator() {
       console.error("Error deleting document: ", error);
       alert("Failed to delete document from Firebase");
     }
-    
+
     console.log(id);
     console.log(newList);
   };
@@ -159,7 +159,7 @@ function RecipeCreator() {
     },
   ];
 
-  const createdRecipes = () => {};
+  const createdRecipes = () => { };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -181,7 +181,7 @@ function RecipeCreator() {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
   }, []);
 
@@ -191,7 +191,7 @@ function RecipeCreator() {
         style={{
           backgroundImage:
             'url("https://static.vecteezy.com/system/resources/previews/037/349/588/non_2x/ai-generated-wood-background-with-chalkboard-and-lemon-free-photo.jpg")',
-
+          backgroundColor:'red',
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           height: "100vh",
@@ -205,9 +205,7 @@ function RecipeCreator() {
           handleDrawerClose={handleDrawerClose}
         />
         <Box
-          component="main"
           sx={{
-            backgroundColor: "white",
             flexGrow: 1,
             p: 3,
             marginTop: "50px",
@@ -231,6 +229,7 @@ function RecipeCreator() {
             <Grid
               container
               direction="column"
+              sx={{backgroundColor:'white'}}
               justifyContent="center"
               alignItems="center"
               columns={16}
@@ -251,7 +250,7 @@ function RecipeCreator() {
             </Grid>
 
             <Grid container xs={16}>
-              <Grid container direction="row" xs={6} spacing={2} sx={{marginTop:5}}>
+              <Grid container direction="row" xs={6} spacing={2} sx={{ marginTop: 5, backgroundColor:'white' }}>
                 <Grid item xs={4} >
                   <TextField
                     id="outlined-basic"
@@ -292,21 +291,21 @@ function RecipeCreator() {
                   </TextField>
                 </Grid>
                 <Grid item xs>
-                <TextField
+                  <TextField
 
-                  sx={{ width:"100%",height:"100%", maxHeight:200}}
-                  multiline
-                  rows={10}
-                  value={mealInfo}
-                  label="Enter Description here"
-                  onChange={(e) => setMealInfo(e.target.value)}
-                />
+                    sx={{ width: "100%", height: "100%", maxHeight: 200 }}
+                    multiline
+                    rows={10}
+                    value={mealInfo}
+                    label="Enter Description here"
+                    onChange={(e) => setMealInfo(e.target.value)}
+                  />
+                </Grid>
+
+
               </Grid>
 
-
-              </Grid>
-
-              <Grid container xs={5}  sx={{marginTop:5}}>
+              <Grid container xs={5} sx={{ marginTop: 5 }}>
                 <Grid item xs align="center" >
                   <Typography variant="h3">Ingredient List</Typography>
                   <List
@@ -319,14 +318,14 @@ function RecipeCreator() {
                       columns={16}
                       alignItems="center"
                       justifyContent="center"
-                      sx={{ overflow: "auto", maxHeight:380 }}
+                      sx={{ overflow: "auto", maxHeight: 380 }}
                     >
                       <Grid item xs>
                         {values.map((value, index) => {
                           const labelId = `checkbox-list-secondary-label-${value}`;
                           const isLastItem = index === values.length - 1;
                           return (
-                            <List key={value}  sx={{overflow:"auto", height: "100%" , maxHeight:100}}>
+                            <List key={value} sx={{ overflow: "auto", height: "100%", maxHeight: 100 }}>
                               <Grid
                                 item
                                 id={labelId}
@@ -363,11 +362,11 @@ function RecipeCreator() {
                 </Grid>
 
               </Grid>
-                         
+
             </Grid>
-<Grid container xs sx={{justifyContent:"center", alignItems:"center"}}>
-<Button size="large" variant="outlined" onClick={handleSubmit}>Submit</Button>
-</Grid>
+            <Grid container xs sx={{ justifyContent: "center", alignItems: "center" }}>
+              <Button size="large" variant="outlined" onClick={handleSubmit}>Submit</Button>
+            </Grid>
 
           </form>
 

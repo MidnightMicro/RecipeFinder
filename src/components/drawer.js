@@ -203,7 +203,7 @@ export default function MiniDrawer({ open, handleDrawerOpen, handleDrawerClose }
                   <CreateOutlinedIcon />
                 </ListItemButton>
                 <ListItemButton
-                  href="/Recipes"
+                  href="/CreatedRecipes"
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? "initial" : "center",
